@@ -1,0 +1,40 @@
+{"id": "uq01", "domain": "in_domain", "query": "What CGPA will put me on academic warning?"}
+{"id": "uq02", "domain": "in_domain", "query": "Is 75% attendance enough to sit in final exams?"}
+{"id": "uq03", "domain": "in_domain", "query": "Can I repeat a course if I got a D grade?"}
+{"id": "uq04", "domain": "in_domain", "query": "What happens if I fail my prerequisite subject?"}
+{"id": "uq05", "domain": "in_domain", "query": "How many years do I have to finish my BS in Software Engineering?"}
+{"id": "uq06", "domain": "in_domain", "query": "What is the penalty if caught cheating on a programming assignment?"}
+{"id": "uq07", "domain": "in_domain", "query": "What is the per credit hour fee for BS Computer Science?"}
+{"id": "uq08", "domain": "in_domain", "query": "How much fee is refunded if I drop a course in the second week?"}
+{"id": "uq09", "domain": "in_domain", "query": "Can I take 6 courses if my CGPA is above 3.0?"}
+{"id": "uq10", "domain": "in_domain", "query": "What does FA grade mean on my transcript?"}
+{"id": "uq11", "domain": "in_domain", "query": "How much fine do I pay for late course registration?"}
+{"id": "uq12", "domain": "in_domain", "query": "What is the admission security deposit amount?"}
+{"id": "uq13", "domain": "in_domain", "query": "How is SGPA calculated at FAST?"}
+{"id": "uq14", "domain": "in_domain", "query": "How many warnings before getting dropped from university?"}
+{"id": "uq15", "domain": "in_domain", "query": "What is the MS tuition fee per credit hour?"}
+{"id": "uq16", "domain": "in_domain", "query": "Can medical leave excuse attendance below 75 percent?"}
+{"id": "uq17", "domain": "in_domain", "query": "What grade point is given for letter grade B?"}
+{"id": "uq18", "domain": "in_domain", "query": "What is the fee for an official academic transcript?"}
+{"id": "uq19", "domain": "in_domain", "query": "What is the normal course load for students in good standing?"}
+{"id": "uq20", "domain": "in_domain", "query": "Are students allowed to smoke on campus premises?"}
+{"id": "uq21", "domain": "in_domain", "query": "What happens when registration is suspended?"}
+{"id": "uq22", "domain": "in_domain", "query": "Where are the different campuses of FAST located in Pakistan?"}
+{"id": "uq23", "domain": "in_domain", "query": "What grade counts when you repeat a course to improve CGPA?"}
+{"id": "uq24", "domain": "in_domain", "query": "How much is the admission fee for new undergraduate admissions?"}
+{"id": "uq25", "domain": "in_domain", "query": "What is the maximum credit overload in regular semesters?"}
+{"id": "uq26", "domain": "in_domain", "query": "Is there any refund after day 20 of classes?"}
+{"id": "uq27", "domain": "in_domain", "query": "What is the penalty for tampering with campus computer hardware?"}
+{"id": "uq28", "domain": "in_domain", "query": "Who can condone attendance absence for medical emergencies?"}
+{"id": "uq29", "domain": "out_of_domain", "query": "How do I apply for the Rhodes scholarship to study at Oxford?"}
+{"id": "uq30", "domain": "out_of_domain", "query": "What are the visa requirements for Pakistani students in Germany?"}
+{"id": "uq31", "domain": "out_of_domain", "query": "What is the cheapest flight ticket from Lahore to London Heathrow?"}
+{"id": "uq32", "domain": "out_of_domain", "query": "What is the lunch menu and biryani price at the student cafeteria today?"}
+{"id": "uq33", "domain": "out_of_domain", "query": "Where can I register for the campus badminton tournament this weekend?"}
+{"id": "uq34", "domain": "out_of_domain", "query": "How do I rent an off-campus private apartment in sector F-11 Islamabad?"}
+{"id": "uq35", "domain": "out_of_domain", "query": "What are the admission requirements for MBBS at King Edward Medical University?"}
+{"id": "uq36", "domain": "out_of_domain", "query": "What are the gym membership charges and timings for female students?"}
+{"id": "uq37", "domain": "out_of_domain", "query": "How do I configure a PyTorch model for distributed GPU training?"}
+{"id": "uq38", "domain": "out_of_domain", "query": "Where is the nearest ATM machine to the university entrance gate?"}
+{"id": "uq39", "domain": "out_of_domain", "query": "What is the weather forecast for Islamabad during the final exam week?"}
+{"id": "uq40", "domain": "out_of_domain", "query": "What are the rules and prizes for the national chess championship?"}

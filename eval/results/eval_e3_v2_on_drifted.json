@@ -1,0 +1,839 @@
+{
+  "label": "e3_v2_on_drifted",
+  "timestamp": "2026-11-22T11:53:47.385313+00:00",
+  "git_commit": "a7b03dc",
+  "golden_path": "golden_v2.jsonl",
+  "golden_sha256_prefix": "df37e5d06447",
+  "collection_name": "fast-policies-drifted",
+  "embedding_version": "lexical-proj-v2",
+  "seed": 42,
+  "golden_questions_count": 32,
+  "dev_threshold_tuning": {
+    "dev_count": 10,
+    "dev_min_answerable_score": 0.1926,
+    "dev_max_unanswerable_score": 0.2162,
+    "tuned_threshold": 0.1918
+  },
+  "module_level": {
+    "embedding_version": "lexical-proj-v2",
+    "mean_paraphrase_similarity": 0.1618,
+    "p10_paraphrase_similarity": 0.0046,
+    "mean_unrelated_similarity": 0.0033,
+    "separation_gap": 0.1585,
+    "chunks_timed": 51,
+    "latency_per_chunk_mean_ms": 1.901,
+    "latency_per_chunk_p95_ms": 2.332,
+    "determinism_max_diff": 0.0
+  },
+  "component_level": {
+    "clean": {
+      "recall_at_3": 0.6957,
+      "recall_at_5": 0.6957,
+      "page_recall_at_3": 0.6522,
+      "page_recall_at_5": 0.6957,
+      "chunk_recall_at_5": 0.6957,
+      "mrr": 0.6304,
+      "chunk_ndcg_at_5": 0.5941,
+      "ndcg_at_5": 0.6475
+    },
+    "noisy": {
+      "recall_at_3": 0.6957,
+      "recall_at_5": 0.6957,
+      "page_recall_at_3": 0.6957,
+      "page_recall_at_5": 0.6957,
+      "chunk_recall_at_5": 0.6957,
+      "mrr": 0.6304,
+      "chunk_ndcg_at_5": 0.592,
+      "ndcg_at_5": 0.6475
+    },
+    "noise_recall_delta": 0.0
+  },
+  "end_to_end": {
+    "faithfulness": 0.625,
+    "test_split_faithfulness": 0.6364,
+    "answer_correctness": 0.7135,
+    "abstention_correctness": 1.0,
+    "false_abstention_rate": 0.4348,
+    "citation_validity": 1.0,
+    "latency_p50_ms": 3498.09,
+    "latency_p95_ms": 4547.05,
+    "latency_samples": 32,
+    "used_fallback_count": 0,
+    "human_judge_agreement_rate": 0.4,
+    "human_judge_cohens_kappa": -0.3636,
+    "human_validated_count": 10,
+    "human_judge_disagreements": [
+      {
+        "question_id": "q02",
+        "human_faithful": true,
+        "judge_faithful": false,
+        "human_note": "Directly supported by Section 2.1",
+        "judge_reason": "False abstention on answerable question"
+      },
+      {
+        "question_id": "q03",
+        "human_faithful": true,
+        "judge_faithful": false,
+        "human_note": "Directly supported by Section 1.2",
+        "judge_reason": "False abstention on answerable question"
+      },
+      {
+        "question_id": "q04",
+        "human_faithful": true,
+        "judge_faithful": false,
+        "human_note": "Directly supported by Section 2.2",
+        "judge_reason": "False abstention on answerable question"
+      },
+      {
+        "question_id": "q10",
+        "human_faithful": false,
+        "judge_faithful": true,
+        "human_note": "False abstention: PKR 20,000 security deposit is present in fee-structure-2026.md Section 1.1",
+        "judge_reason": "The context explicitly states that the Security Deposit is PKR 20,000 and is refundable upon degree clearance."
+      },
+      {
+        "question_id": "q21",
+        "human_faithful": true,
+        "judge_faithful": false,
+        "human_note": "Directly supported by Section 5.2",
+        "judge_reason": "False abstention on answerable question"
+      },
+      {
+        "question_id": "q23",
+        "human_faithful": false,
+        "judge_faithful": true,
+        "human_note": "False abstention: top-3 chunks missed fee-structure-2026.md_c01 rate needed for calculation",
+        "judge_reason": "The calculation correctly applies the PKR 10,000 per credit rate and the 50% refund policy for withdrawals between days 11 and 20 as stated in the context."
+      }
+    ]
+  },
+  "per_question": [
+    {
+      "question_id": "q01",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "5f6ef740-67b1-49eb-868c-091fef53138a",
+      "answer": "The minimum CGPA required to avoid academic warning is **2.20** for all engineering and computing cohorts.\n\nSource: academic-rules-2027.md, Section 2. CGPA Probation Criteria (page 22)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2027.md",
+          "section": "2. CGPA Probation Criteria",
+          "doc_version": "2027-01",
+          "page": 22
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1779.879,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that the minimum CGPA required to avoid academic warning is 2.20 for all engineering and computing cohorts."
+    },
+    {
+      "question_id": "q02",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "7981d0c3-2228-4532-8ce5-a74c2d40eb7e",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2517.878,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q03",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "44f8a0f9-ebd4-4abc-b630-ab6cdb77d2b9",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2474.686,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q04",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "3cdff8bf-77a2-433b-bf12-fec55f9a9ec4",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3575.575,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q05",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "395a4e5a-b4df-4373-b26a-6c523d0119fb",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3645.854,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q06",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "bd9e53ff-2627-4fab-8654-23a8021afe25",
+      "answer": "For a first minor offense of academic dishonesty or plagiarism, the student receives an immediate failing grade \"F\" in the respective assignment or course, accompanied by an official written reprimand.\n\nSource: student-handbook-2026.md | 2. Disciplinary Actions & Penalties | page 11",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3696.203,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the penalties for a first minor offense as stated in the provided context."
+    },
+    {
+      "question_id": "q07",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "8eba6d7c-869e-4b40-85c5-67a5489ac821",
+      "answer": "The tuition fee per credit hour for undergraduate BS programmes is PKR 10,000.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates (1.1)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3558.913,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that the tuition fee per credit hour for undergraduate programmes (including BS) is PKR 10,000."
+    },
+    {
+      "question_id": "q08",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "2d8b4a77-e719-4ad6-92a5-d9cf57b4256c",
+      "answer": "50 percent of tuition fees is refunded.\n\nSource: fee-structure-2026.md, Section 3.2 (Fee Refund Schedule upon Course or Programme Withdrawal)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "ai-ethics-policy-2026.md",
+          "section": "1. Authorized Generative AI Usage in Coursework",
+          "doc_version": "2026-06",
+          "page": 3
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3582.05,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that if withdrawal occurs between day 11 and day 20, 50 percent of tuition fees are refunded."
+    },
+    {
+      "question_id": "q09",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "a8b77d0d-420c-4f1e-bc7d-ec8c7541a1e7",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2548.846,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q10",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "6af5a4cb-7d75-4cef-8b07-ad03c0e30e8e",
+      "answer": "The refundable security deposit amount required at the time of admission is PKR 20,000.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "hostel-transport-rules-2026.md",
+          "section": "1. Hostel Allotment and Curfew Hours",
+          "doc_version": "2026-06",
+          "page": 5
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 4547.051,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that the Security Deposit is PKR 20,000 and is refundable upon degree clearance."
+    },
+    {
+      "question_id": "q11",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "5949c141-ee43-4333-8060-7a14df19af54",
+      "answer": "The tuition fee per credit hour for Master of Science (MS) programs is PKR 12,500.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates (1.2)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3639.651,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states in section 1.2 that the Tuition Fee per Credit Hour for Master of Science (MS) programmes is PKR 12,500."
+    },
+    {
+      "question_id": "q12",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "5300e7d6-ab18-4058-9754-52852b30394c",
+      "answer": "Under the university grading scheme, a letter grade of **B** is assigned a grade point value of **3.00**.\n\nSource: prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3576.251,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly lists B (3.00) in the grading scale."
+    },
+    {
+      "question_id": "q13",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "dc72f77b-75d9-447a-9588-96fc6b1b0d49",
+      "answer": "The Semester Grade Point Average (SGPA) is calculated as the sum of the products of credit hours and grade points divided by the total credit hours registered in the semester. The formula is:\n\n**SGPA = Sum(Credit_Hours * Grade_Points) / Sum(Credit_Hours)**\n\nSource: prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3624.75,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The mathematical formula and description in the answer are directly quoted from the provided context."
+    },
+    {
+      "question_id": "q14",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "097244e5-4cc2-4ebe-be5a-ad4567c03910",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3.349,
+      "answer_correctness": 0.3333,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q15",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "aa81f04c-c553-4104-bfc2-7fb9684d134b",
+      "answer": "The surcharge fee for late course registration is PKR 3,000 per week after the official deadline.\n\nSource: fee-structure-2026.md, Section 2. Incidental Fees & Service Charges (2.1)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "2. Incidental Fees & Service Charges",
+          "doc_version": "2026-27",
+          "page": 6
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3736.549,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the fee amount and conditions stated in section 2.1 of the provided context."
+    },
+    {
+      "question_id": "q16",
+      "split": "dev",
+      "type": "unanswerable",
+      "trace_id": "5257df49-ca6e-454f-aa0c-90b2779ef6ee",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3.819,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q17",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "16c89f85-3f83-4f11-ad81-f37d8f58af63",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3.468,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q18",
+      "split": "dev",
+      "type": "unanswerable",
+      "trace_id": "b6adbece-8b5c-442b-8f6a-c8c5a8293969",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2492.278,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q19",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "0ad72a97-de1d-40a1-af67-cf6d3783d4ff",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 4.473,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q20",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "b5cba31c-a38a-4cab-bcf6-510bab127308",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 4.207,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q21",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "fb8c4ef0-b57f-4be4-8a39-cf1c77a4b5eb",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3498.089,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q22",
+      "split": "dev",
+      "type": "hard",
+      "trace_id": "da46df58-6915-49a3-a64b-abccb418f1cf",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3505.924,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q23",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "cd0e1f95-4edd-4d5e-9c5f-8c1ee419617d",
+      "answer": "Based on the provided context, the exact net tuition amount refunded is **PKR 15,000**.\n\n**Calculation:**\n1.  **Tuition for the course:** The course is 3 credits. According to `fee-structure-2026.md` (Section 1.1), the tuition fee is PKR 10,000 per credit hour.\n    *   $3 \\text{ credits} \\times \\text{PKR } 10,000 = \\text{PKR } 30,000$.\n2.  **Refund Percentage:** The withdrawal occurs on the 14th calendar day. According to `fee-structure-2026.md` (Section 3.2), withdrawals between day 11 and day 20 result in a **50 percent** refund of tuition fees.\n3.  **Refund Amount:**\n    *   $50\\% \\times \\text{PKR } 30,000 = \\text{PKR } 15,000$.\n\n**Source:**\n*   `fee-structure-2026.md` | 1. Undergraduate & Graduate Tuition Rates | page 2\n*   `fee-structure-2026.md` | 3. Fee Refund Schedule upon Course or Programme Withdrawal |",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 5041.816,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The calculation correctly applies the PKR 10,000 per credit rate and the 50% refund policy for withdrawals between days 11 and 20 as stated in the context."
+    },
+    {
+      "question_id": "q24",
+      "split": "dev",
+      "type": "hard",
+      "trace_id": "119d91d8-63f7-4167-ab92-9ebd0872677e",
+      "answer": "Based on the provided context:\n\n1.  **Barred from entering premises/labs:** A student is barred from attending classes, entering university premises, or utilizing laboratory workstations when their **registration is suspended** [student-handbook-2026.md | 2. Disciplinary Actions & Penalties | page 11].\n2.  **Medical condonation below 75%:** **No.** The mandatory attendance percentage is **85 percent** starting Spring 2027. Condonation is permitted up to **5 percent** strictly for certified hospitalizations, which would allow attendance to drop to a minimum of **80 percent** (85% - 5%), not below 75 percent [academic-rules-2027.md | 1. Revised Attendance Threshold | page 9].",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2027.md",
+          "section": "1. Revised Attendance Threshold",
+          "doc_version": "2027-01",
+          "page": 9
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "3. Campus Conduct, Dress Code, and Property",
+          "doc_version": "2026-06",
+          "page": 18
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2864.154,
+      "answer_correctness": 1.0,
+      "judge_faithful": false,
+      "judge_reason": "The answer cites 'academic-rules-2027.md' and specific page numbers that are not present in the provided context, which only lists 'doc_b06_newer_version.md' and 'student-handbook-2026.md'."
+    },
+    {
+      "question_id": "q26",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "156f77f1-bc23-4761-a22f-4fbe763621be",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3531.7,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q25",
+      "split": "dev",
+      "type": "adversarial",
+      "trace_id": "0b612c9f-9533-4562-bac3-be312454c838",
+      "answer": "I cannot fulfill this request. Security guardrail blocked potential prompt injection.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 0.742,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q27",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "eff68dd9-5b3b-476f-bee5-9f95d29e85ca",
+      "answer": "Generative AI tools are permitted in coursework only when explicitly authorized in the course syllabus by the course instructor. When permitted, students must include an \"AI Usage Statement\" detailing the tool names, prompts utilized, and sections where AI contributed.\n\nSource: ai-ethics-policy-2026.md, Section 1. Authorized Generative AI Usage in Coursework (page 3)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "ai-ethics-policy-2026.md",
+          "section": "1. Authorized Generative AI Usage in Coursework",
+          "doc_version": "2026-06",
+          "page": 3
+        },
+        {
+          "source": "ai-ethics-policy-2026.md",
+          "section": "1. Authorized Generative AI Usage in Coursework",
+          "doc_version": "2026-06",
+          "page": 3
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3902.198,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the conditions for AI usage and the required statement details found in the provided context, despite a minor discrepancy in the cited source filename."
+    },
+    {
+      "question_id": "q28",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "c279fbd6-cf71-40d0-9aa5-96fb70b2a6cb",
+      "answer": "Based on the provided context:\n\n*   **Curfew Hours:** The mandatory curfew is **10:00 PM on weekdays** and **11:00 PM on weekends**.\n*   **Penalty for Subletting:** Subletting hostel rooms to unauthorized individuals or non-students results in **immediate expulsion from student housing** and **forfeiture of the hostel security deposit**.\n\nSource: `hostel-transport-rules-2026.md`, Section 1. Hostel Allotment and Curfew Hours (page 5).",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "hostel-transport-rules-2026.md",
+          "section": "1. Hostel Allotment and Curfew Hours",
+          "doc_version": "2026-06",
+          "page": 5
+        },
+        {
+          "source": "hostel-transport-rules-2026.md",
+          "section": "1. Hostel Allotment and Curfew Hours",
+          "doc_version": "2026-06",
+          "page": 5
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2695.36,
+      "answer_correctness": 1.0,
+      "judge_faithful": false,
+      "judge_reason": "The answer cites the source as 'hostel-transport-rules-2026.md', but the provided context explicitly lists the source as 'doc_b10_valid_hostel.md'."
+    },
+    {
+      "question_id": "q29",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "d1feb2cd-5ed3-4606-b194-22cb40cc60f3",
+      "answer": "Based on the provided context, the disciplinary actions are as follows:\n\n*   **Tampering with campus computer hardware:** Willful destruction, tampering, or unauthorized reconfiguration of university laboratory hardware results in **monetary restitution and potential semester suspension** [student-handbook-2026.md | 3. Campus Conduct, Dress Code, and Property | page 18].\n*   **Running cryptocurrency mining on university GPU clusters:** The provided context states that mining cryptocurrencies on campus clusters \"results i[n]\" [ai-ethics-policy-2026.md | 2. Departmental Compute Resources | page 10], but the specific disciplinary action is cut off in the text. Therefore, I do not have sufficient information in the verified university policies to answer this specific part of the question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3939.706,
+      "answer_correctness": 0.5,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q30",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "8f33b69d-8f08-4d95-9fb3-a6d8c9e8f909",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3.381,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q31",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "db8d1bf0-43f6-42b0-aa0e-10504635a15f",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2.737,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q32",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "49031693-c118-4fe0-a535-b77a0920d6b5",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2.088,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    }
+  ]
+}

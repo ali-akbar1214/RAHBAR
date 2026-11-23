@@ -1,0 +1,181 @@
+{
+  "total_queries": 40,
+  "domain_breakdown": {
+    "in_domain": 28,
+    "out_of_domain": 12
+  },
+  "domain_score_distributions": {
+    "in_domain": {
+      "count": 28,
+      "min": 0.1022,
+      "p50": 0.3238,
+      "max": 0.7521
+    },
+    "out_of_domain": {
+      "count": 12,
+      "min": 0.1961,
+      "p50": 0.3742,
+      "max": 0.8861
+    }
+  },
+  "covered_count": 35,
+  "uncovered_count": 5,
+  "coverage_share": 0.875,
+  "target_threshold": 0.85,
+  "similarity_threshold": 0.18,
+  "gap_detected": false,
+  "uncovered_queries": [
+    {
+      "id": "uq05",
+      "domain": "in_domain",
+      "query": "How many years do I have to finish my BS in Software Engineering?",
+      "best_score": 0.1022,
+      "nearest_golden_id": "q02",
+      "nearest_golden_q": "What is the minimum attendance percentage required to sit in the final examination?"
+    },
+    {
+      "id": "uq06",
+      "domain": "in_domain",
+      "query": "What is the penalty if caught cheating on a programming assignment?",
+      "best_score": 0.1555,
+      "nearest_golden_id": "q28",
+      "nearest_golden_q": "What are the weekday and weekend curfew hours for FAST-NUCES residential hostels and the penalty for subletting?"
+    },
+    {
+      "id": "uq09",
+      "domain": "in_domain",
+      "query": "Can I take 6 courses if my CGPA is above 3.0?",
+      "best_score": 0.1386,
+      "nearest_golden_id": "q23",
+      "nearest_golden_q": "If a student drops a 3-credit BS course on the 14th calendar day of classes, what exact net tuition amount in PKR is refunded?"
+    },
+    {
+      "id": "uq14",
+      "domain": "in_domain",
+      "query": "How many warnings before getting dropped from university?",
+      "best_score": 0.1428,
+      "nearest_golden_id": "q09",
+      "nearest_golden_q": "How many consecutive semesters on academic warning or probation result in academic dismissal?"
+    },
+    {
+      "id": "uq22",
+      "domain": "in_domain",
+      "query": "Where are the different campuses of FAST located in Pakistan?",
+      "best_score": 0.1625,
+      "nearest_golden_id": "q26",
+      "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": 1,
+      "label_terms": [
+        "years",
+        "have",
+        "finish",
+        "software"
+      ],
+      "cluster_label": "years, have, finish, software",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq05",
+          "domain": "in_domain",
+          "query": "How many years do I have to finish my BS in Software Engineering?",
+          "best_score": 0.1022,
+          "nearest_golden_id": "q02",
+          "nearest_golden_q": "What is the minimum attendance percentage required to sit in the final examination?"
+        }
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "label_terms": [
+        "penalty",
+        "caught",
+        "cheating",
+        "programming"
+      ],
+      "cluster_label": "penalty, caught, cheating, programming",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq06",
+          "domain": "in_domain",
+          "query": "What is the penalty if caught cheating on a programming assignment?",
+          "best_score": 0.1555,
+          "nearest_golden_id": "q28",
+          "nearest_golden_q": "What are the weekday and weekend curfew hours for FAST-NUCES residential hostels and the penalty for subletting?"
+        }
+      ]
+    },
+    {
+      "cluster_id": 3,
+      "label_terms": [
+        "courses",
+        "cgpa",
+        "above"
+      ],
+      "cluster_label": "courses, cgpa, above",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq09",
+          "domain": "in_domain",
+          "query": "Can I take 6 courses if my CGPA is above 3.0?",
+          "best_score": 0.1386,
+          "nearest_golden_id": "q23",
+          "nearest_golden_q": "If a student drops a 3-credit BS course on the 14th calendar day of classes, what exact net tuition amount in PKR is refunded?"
+        }
+      ]
+    },
+    {
+      "cluster_id": 4,
+      "label_terms": [
+        "warnings",
+        "before",
+        "getting",
+        "dropped"
+      ],
+      "cluster_label": "warnings, before, getting, dropped",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq14",
+          "domain": "in_domain",
+          "query": "How many warnings before getting dropped from university?",
+          "best_score": 0.1428,
+          "nearest_golden_id": "q09",
+          "nearest_golden_q": "How many consecutive semesters on academic warning or probation result in academic dismissal?"
+        }
+      ]
+    },
+    {
+      "cluster_id": 5,
+      "label_terms": [
+        "different",
+        "campuses",
+        "fast",
+        "located"
+      ],
+      "cluster_label": "different, campuses, fast, located",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq22",
+          "domain": "in_domain",
+          "query": "Where are the different campuses of FAST located in Pakistan?",
+          "best_score": 0.1625,
+          "nearest_golden_id": "q26",
+          "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
+        }
+      ]
+    }
+  ],
+  "label": "after",
+  "golden_path": "eval/golden_v2.jsonl",
+  "golden_count": 32,
+  "embedding_version": "lexical-proj-v2",
+  "threshold_rationale": "Derived from Part B module data (lexical-proj-v2): mean_paraphrase=0.0974, mean_unrelated=0.0368 -> threshold=0.1800",
+  "timestamp": "2026-11-23T20:15:25.667608+00:00"
+}

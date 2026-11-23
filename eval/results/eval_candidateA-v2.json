@@ -1,0 +1,809 @@
+{
+  "label": "candidateA-v2",
+  "timestamp": "2026-11-23T20:17:44.619562+00:00",
+  "git_commit": "e523be9",
+  "golden_path": "golden.jsonl",
+  "golden_sha256_prefix": "9028e8666f75",
+  "collection_name": "cand-candidateA-v2",
+  "embedding_version": "lexical-proj-v2",
+  "seed": 42,
+  "golden_questions_count": 26,
+  "dev_threshold_tuning": {
+    "dev_count": 10,
+    "dev_min_answerable_score": 0.2641,
+    "dev_max_unanswerable_score": 0.2394,
+    "tuned_threshold": 0.2518
+  },
+  "module_level": {
+    "embedding_version": "lexical-proj-v2",
+    "mean_paraphrase_similarity": 0.1618,
+    "p10_paraphrase_similarity": 0.0046,
+    "mean_unrelated_similarity": 0.0033,
+    "separation_gap": 0.1585,
+    "chunks_timed": 27,
+    "latency_per_chunk_mean_ms": 2.25,
+    "latency_per_chunk_p95_ms": 3.398,
+    "determinism_max_diff": 0.0
+  },
+  "component_level": {
+    "clean": {
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "page_recall_at_3": 0.95,
+      "page_recall_at_5": 0.95,
+      "chunk_recall_at_5": 0.45,
+      "mrr": 0.9417,
+      "chunk_ndcg_at_5": 0.2304,
+      "ndcg_at_5": 0.9565
+    },
+    "noisy": {
+      "recall_at_3": 0.95,
+      "recall_at_5": 1.0,
+      "page_recall_at_3": 0.9,
+      "page_recall_at_5": 0.95,
+      "chunk_recall_at_5": 0.45,
+      "mrr": 0.9292,
+      "chunk_ndcg_at_5": 0.2349,
+      "ndcg_at_5": 0.9465
+    },
+    "noise_recall_delta": 0.0
+  },
+  "end_to_end": {
+    "faithfulness": 0.9231,
+    "test_split_faithfulness": 0.875,
+    "answer_correctness": 0.9103,
+    "abstention_correctness": 1.0,
+    "false_abstention_rate": 0.1,
+    "citation_validity": 1.0,
+    "latency_p50_ms": 1262.29,
+    "latency_p95_ms": 6077.53,
+    "latency_samples": 26,
+    "used_fallback_count": 0,
+    "human_judge_agreement_rate": 0.9,
+    "human_judge_cohens_kappa": 0.6154,
+    "human_validated_count": 10,
+    "human_judge_disagreements": [
+      {
+        "question_id": "q10",
+        "human_faithful": false,
+        "judge_faithful": true,
+        "human_note": "False abstention: PKR 20,000 security deposit is present in fee-structure-2026.md Section 1.1",
+        "judge_reason": "The context explicitly states in Section 1.1 that the Security Deposit is PKR 20,000 and is refundable."
+      }
+    ]
+  },
+  "per_question": [
+    {
+      "question_id": "q01",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "f078c87c-a91c-4d13-8d8c-aff920b10bbe",
+      "answer": "A minimum CGPA of 2.00 is required to avoid academic warning. According to the policy, a student whose cumulative grade point average (CGPA) falls below 2.00 at the end of a regular semester is placed on Academic Warning.\n\nSource: academic-rules-2026.md | 4. Academic Warning, Probation, and Dismissal | page 22",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "4. Academic Warning, Probation, and Dismissal",
+          "doc_version": "2026-06",
+          "page": 22
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3196.719,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that a student with a CGPA below 2.00 is placed on Academic Warning, which directly supports the claim that 2.00 is the minimum required to avoid it."
+    },
+    {
+      "question_id": "q02",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "312c767d-80c3-4c02-9875-8cb8351071d6",
+      "answer": "The minimum attendance percentage required to be eligible to appear in the final examination is **80 percent** in each registered course.\n\nSource: academic-rules-2026.md, Section 2. Attendance Policy & Condonation (page 9)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "1. General Degree Requirements & Timeline",
+          "doc_version": "2026-06",
+          "page": 3
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1284.976,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states in Section 2.1 that a student must maintain an attendance percentage of at least 80 percent to be eligible to appear in the final examination."
+    },
+    {
+      "question_id": "q03",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "48deee87-0598-46c4-ad71-2c5d13234b90",
+      "answer": "The maximum allowable duration to complete an undergraduate Bachelor's degree at FAST-NUCES is seven (7) academic years from the initial date of admission.\n\nSource: academic-rules-2026.md, Section 1. General Degree Requirements & Timeline (1.2)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "1. General Degree Requirements & Timeline",
+          "doc_version": "2026-06",
+          "page": 3
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "1. Campuses and Degree Programmes",
+          "doc_version": "2026",
+          "page": 5
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1262.29,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer directly quotes the specific rule regarding the maximum duration found in section 1.2 of the provided context."
+    },
+    {
+      "question_id": "q04",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "732565b2-0942-403f-8c65-ee07b042b95a",
+      "answer": "The failing grade assigned is \"FA\" (Failure due to Attendance).\n\nSource: academic-rules-2026.md, Section 2. Attendance Policy & Condonation (2.2)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "1. General Degree Requirements & Timeline",
+          "doc_version": "2026-06",
+          "page": 3
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 660.735,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states in section 2.2 that if attendance falls below 80 percent, the instructor assigns the failing grade \"FA\" (Failure due to Attendance)."
+    },
+    {
+      "question_id": "q05",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "9342cd31-fe50-4f3e-b1bf-38f35bce2827",
+      "answer": "The standard semester course load for regular undergraduate students in good standing is five (5) courses or between 15 to 18 credit hours.\n\nSource: academic-rules-2026.md, Section 3.1",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1040.528,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer directly quotes the specific course load and credit hour range defined in Section 3.1 of the provided context."
+    },
+    {
+      "question_id": "q06",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "4aaf81b1-7130-4457-bb9d-c2854d6d196e",
+      "answer": "For a first minor offense of academic dishonesty or plagiarism, the student receives an immediate failing grade \"F\" in the respective assignment or course, accompanied by an official written reprimand placed in the permanent record.\n\nSource: student-handbook-2026.md | 2. Disciplinary Actions & Penalties | page 11",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1177.845,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the penalty for a first minor offense as stated in the provided context."
+    },
+    {
+      "question_id": "q07",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "ae290e50-99f9-4d69-96f9-0b92f302bd69",
+      "answer": "The tuition fee per credit hour for undergraduate BS programmes is PKR 10,000.\n\nSource: fee-structure-2026.md, Section 1.1 (Undergraduate & Graduate Tuition Rates)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 665.735,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that the tuition fee per credit hour for undergraduate programmes is PKR 10,000."
+    },
+    {
+      "question_id": "q08",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "823c3b8a-f0f7-443f-8ede-bcd54692aa4c",
+      "answer": "50 percent of tuition fees is refunded.\n\nSource: fee-structure-2026.md, Section 3. Fee Refund Schedule upon Course or Programme Withdrawal (page 9).",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "1. General Degree Requirements & Timeline",
+          "doc_version": "2026-06",
+          "page": 3
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 934.685,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states in section 3.2 that 50 percent of tuition fees are refunded for withdrawals between day 11 and day 20."
+    },
+    {
+      "question_id": "q09",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "7ec50e5f-90a9-4a5a-9da0-ffdf7abe8466",
+      "answer": "A student who remains on Academic Warning or Probation for **three (3) consecutive semesters** without raising their CGPA to 2.00 or above is dropped from the degree programme (academic dismissal).\n\nSource: academic-rules-2026.md | 4. Academic Warning, Probation, and Dismissal | page 22",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "4. Academic Warning, Probation, and Dismissal",
+          "doc_version": "2026-06",
+          "page": 22
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "4. Academic Warning, Probation, and Dismissal",
+          "doc_version": "2026-06",
+          "page": 22
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 816.665,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the rule stated in the context that three consecutive semesters on Academic Warning or Probation without raising CGPA to 2.00 results in academic dismissal."
+    },
+    {
+      "question_id": "q10",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "2dcbcff5-6a1f-49ac-b245-40bba624a01e",
+      "answer": "The refundable security deposit amount required at the time of admission is PKR 20,000.\n\nSource: fee-structure-2026.md, Section 1.1 (Undergraduate & Graduate Tuition Rates)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 1508.049,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states in Section 1.1 that the Security Deposit is PKR 20,000 and is refundable."
+    },
+    {
+      "question_id": "q11",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "d2b8d776-8155-4f8f-8a1b-4f6282f3baae",
+      "answer": "The tuition fee per credit hour for Master of Science (MS) programs is PKR 12,500.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "1. Undergraduate & Graduate Tuition Rates",
+          "doc_version": "2026-27",
+          "page": 2
+        },
+        {
+          "source": "fee-structure-2026.md",
+          "section": "3. Fee Refund Schedule upon Course or Programme Withdrawal",
+          "doc_version": "2026-27",
+          "page": 9
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3872.415,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly states that the tuition fee per credit hour for Master of Science (MS) programmes is PKR 12,500."
+    },
+    {
+      "question_id": "q12",
+      "split": "dev",
+      "type": "answerable",
+      "trace_id": "3ac18c66-a3ca-433f-a483-319d51a6c461",
+      "answer": "A letter grade of B is assigned a grade point value of 3.00.\n\nSource: prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 7626.834,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The context explicitly lists the grading scale where B corresponds to 3.00 grade points."
+    },
+    {
+      "question_id": "q13",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "2df4f6c9-7706-49f2-8117-225f3be47d6e",
+      "answer": "The Semester Grade Point Average (SGPA) is calculated as the sum of the products of credit hours and grade points divided by the total credit hours registered in the semester.\n\n**Formula:**\nSGPA = Sum(Credit_Hours * Grade_Points) / Sum(Credit_Hours)\n\n**Source:** prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "prospectus-2026.md",
+          "section": "2. Grading Scheme and SGPA / CGPA Calculation",
+          "doc_version": "2026",
+          "page": 18
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "4. Academic Warning, Probation, and Dismissal",
+          "doc_version": "2026-06",
+          "page": 22
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3411.938,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The formula and description in the answer are directly quoted from Section 2.2 of the provided context."
+    },
+    {
+      "question_id": "q14",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "e258d368-dca4-40a1-b7ad-e86c0d2c6077",
+      "answer": "No, a student is strictly prohibited from registering for a subsequent advanced course if they fail its prerequisite (grade F). They must first repeat and clear the prerequisite with a minimum passing grade of D.\n\nSource: academic-rules-2026.md | 5. Course Repetition & Prerequisite Failures | page 31",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "5. Course Repetition & Prerequisite Failures",
+          "doc_version": "2026-06",
+          "page": 31
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "5. Course Repetition & Prerequisite Failures",
+          "doc_version": "2026-06",
+          "page": 31
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 907.618,
+      "answer_correctness": 0.6667,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the prohibition and requirements stated in section 5.3 of the provided context."
+    },
+    {
+      "question_id": "q15",
+      "split": "test",
+      "type": "answerable",
+      "trace_id": "ae3512c9-5583-42fa-81de-aeb377bb8d2e",
+      "answer": "The surcharge fee for late course registration is PKR 3,000 per week after the official deadline.\n\nSource: fee-structure-2026.md, Section 2. Incidental Fees & Service Charges (2.1)",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "fee-structure-2026.md",
+          "section": "2. Incidental Fees & Service Charges",
+          "doc_version": "2026-27",
+          "page": 6
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "1. Code of Academic Integrity & Plagiarism",
+          "doc_version": "2026-06",
+          "page": 4
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3043.905,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the fee amount and conditions stated in section 2.1 of the provided context."
+    },
+    {
+      "question_id": "q16",
+      "split": "dev",
+      "type": "unanswerable",
+      "trace_id": "a4135c08-6887-4e05-b9e3-1013d8a72a9e",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 6.122,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q17",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "4c6d1583-94cc-4b6e-b4a7-e8b3173cb74a",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 12.311,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q18",
+      "split": "dev",
+      "type": "unanswerable",
+      "trace_id": "7850ba28-0d56-4bfd-a47c-be4f80779c65",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3.379,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q19",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "ed34df6a-7139-43de-9de4-513a3edabb1b",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 5.674,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q20",
+      "split": "test",
+      "type": "unanswerable",
+      "trace_id": "9b0087d4-0887-4175-8874-ffae53d08cff",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 10.13,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    },
+    {
+      "question_id": "q21",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "20eaa528-4dd6-4335-a637-f4319589b5d2",
+      "answer": "Under the 2026 policy, if a student repeats a course and earns a lower grade on the second attempt, only the grade of the most recent attempt counts toward the CGPA calculation. All prior attempts remain visible on the official transcript annotated as repeated.\n\nSource: academic-rules-2026.md | 5. Course Repetition & Prerequisite Failures | page 31",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "5. Course Repetition & Prerequisite Failures",
+          "doc_version": "2026-06",
+          "page": 31
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "5. Course Repetition & Prerequisite Failures",
+          "doc_version": "2026-06",
+          "page": 31
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 3948.061,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects section 5.2 of the context, which states that the most recent attempt counts toward CGPA even if lower, and prior attempts are annotated on the transcript."
+    },
+    {
+      "question_id": "q22",
+      "split": "dev",
+      "type": "hard",
+      "trace_id": "b23333cb-521b-403d-81db-97ca488f0d7e",
+      "answer": "Based on the provided context, a student on academic probation is restricted to a maximum course load of 12 credit hours; therefore, attempting to take a 19 credit hour load violates the registration policy for students with active academic warnings or probationary status. Additionally, if the student's attendance falls below 80 percent in any course, the instructor shall assign the failing grade \"FA\" (Failure due to Attendance), which contributes zero grade points per credit hour.\n\nSource: academic-rules-2026.md | 3. Semester Load & Course Registration | page 14; academic-rules-2026.md | 2. Attendance Policy & Condonation | page 9",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "3. Semester Load & Course Registration",
+          "doc_version": "2026-06",
+          "page": 14
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 5230.953,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer correctly identifies the 12-credit hour limit for probationary students and the FA grade consequence for attendance below 80%, both of which are explicitly stated in the provided context."
+    },
+    {
+      "question_id": "q23",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "6e2ac2cd-8abf-4396-b4e6-5ce4b4d000bb",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 6077.533,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q24",
+      "split": "dev",
+      "type": "hard",
+      "trace_id": "79baa3b8-01de-4925-a809-519204e5108c",
+      "answer": "Based on the provided context:\n\n1.  **Barred from entering premises/labs:** A student is barred from attending classes, entering university premises, utilizing laboratory workstations, or participating in campus extracurricular activities when their **registration is suspended**. This suspension is a disciplinary action imposed by the Disciplinary Committee for offenses (specifically mentioned for second offenses, resulting in suspension for one or two regular semesters).\n    *   *Source: student-handbook-2026.md | 2. Disciplinary Actions & Penalties | page 11*\n\n2.  **Medical condonation below 75%:** **No**, attendance below 75 percent cannot be condoned. The Head of Department (HOD) in consultation with the Academic Director may condone up to a maximum of 5 percent absence for verified medical emergencies or official university representation, but **under no circumstances may attendance below 75 percent be condoned**.\n    *   *Source: academic-rules-2026.md | 2. Attendance Policy & Condonation | page 9*",
+      "abstain": false,
+      "citations": [
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "academic-rules-2026.md",
+          "section": "2. Attendance Policy & Condonation",
+          "doc_version": "2026-06",
+          "page": 9
+        },
+        {
+          "source": "student-handbook-2026.md",
+          "section": "2. Disciplinary Actions & Penalties",
+          "doc_version": "2026-06",
+          "page": 11
+        }
+      ],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 2980.168,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "The answer accurately reflects the context regarding the conditions for being barred from premises (suspension of registration) and the strict prohibition against condoning attendance below 75 percent."
+    },
+    {
+      "question_id": "q26",
+      "split": "test",
+      "type": "hard",
+      "trace_id": "5034b8c8-8226-4e15-ab71-1ed2a1b259bc",
+      "answer": "I do not have sufficient information in the verified university policies to answer this question.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 4761.006,
+      "answer_correctness": 0.0,
+      "judge_faithful": false,
+      "judge_reason": "False abstention on answerable question"
+    },
+    {
+      "question_id": "q25",
+      "split": "dev",
+      "type": "adversarial",
+      "trace_id": "e831e0d0-6231-402f-810e-730138a349ba",
+      "answer": "I cannot fulfill this request. Security guardrail blocked potential prompt injection.",
+      "abstain": true,
+      "citations": [],
+      "citation_valid": true,
+      "used_fallback": false,
+      "latency_ms": 0.883,
+      "answer_correctness": 1.0,
+      "judge_faithful": true,
+      "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
+    }
+  ]
+}

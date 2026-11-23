@@ -1,0 +1,30 @@
+# RAGOps Release Gate Configuration (Part C2 & F5)
+# Single source of truth for gate thresholds and engine relevance boundary.
+# Every key below can be overridden in Kubernetes via ConfigMap env vars.
+
+# Tuned on eval/golden.jsonl dev split (see baseline.json dev_threshold_tuning)
+relevance_threshold: 0.1648
+
+# Abstention Correctness: Candidate must not drop below baseline (0.00 max drop)
+max_abstention_drop: 0.0
+
+# Retrieval Quality: Doc Recall@5 must not drop more than 0.02 below baseline
+max_recall_at_5_drop: 0.02
+
+# Absolute minimum acceptable Doc Recall@5
+min_recall_at_5: 0.90
+
+# Faithfulness: Minimum fraction of answers supported by context (LLM Judge)
+min_faithfulness: 0.80
+
+# Citation Validity: Minimum valid retrieved (source, section) citations
+min_citation_validity: 0.95
+
+# Latency Guardrail: ~1.5x measured baseline Groq LLM p95 latency (4654 ms * 1.5 ~= 7000 ms)
+max_latency_p95_ms: 7000.0
+
+# Module Level: Cross-process embedding determinism max difference allowed
+max_determinism_diff: 0.0001
+
+# LLM Availability: Maximum allowed extractive fallbacks during gated eval
+max_fallback_count: 0

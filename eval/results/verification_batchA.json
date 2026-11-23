@@ -1,0 +1,184 @@
+{
+  "timestamp": "2026-11-23T20:14:33.966561+00:00",
+  "batch_label": "batchA",
+  "embedding_version": "lexical-proj-v1",
+  "total_scanned": 5,
+  "passed_count": 4,
+  "quarantined_count": 0,
+  "archived_count": 1,
+  "per_check_summary": {
+    "quality": {
+      "passed": 5,
+      "failed": 0
+    },
+    "completeness": {
+      "passed": 5,
+      "failed": 0
+    },
+    "recency": {
+      "passed": 4,
+      "failed": 1
+    },
+    "uniqueness": {
+      "passed": 5,
+      "failed": 0
+    }
+  },
+  "records": [
+    {
+      "filename": "academic-rules-2023.md",
+      "source": "academic-rules-2023.md",
+      "doc_family": "academic-rules",
+      "doc_version": "2023-08",
+      "date": "2023-08-01",
+      "passed_all": false,
+      "action": "archived",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.0,
+      "most_similar_doc": null,
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": false,
+          "reason": "Document explicitly marked superseded (version 2023-08)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.0000 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "academic-rules-2026.md",
+      "source": "academic-rules-2026.md",
+      "doc_family": "academic-rules",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.0,
+      "most_similar_doc": null,
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'academic-rules' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.0000 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "fee-structure-2026.md",
+      "source": "fee-structure-2026.md",
+      "doc_family": "fee-structure",
+      "doc_version": "2026-27",
+      "date": "2026-07-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.2882,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'fee-structure' (version 2026-27)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.2882 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "prospectus-2026.md",
+      "source": "prospectus-2026.md",
+      "doc_family": "prospectus",
+      "doc_version": "2026",
+      "date": "2026-01-15",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.4413,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'prospectus' (version 2026)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.4413 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "student-handbook-2026.md",
+      "source": "student-handbook-2026.md",
+      "doc_family": "student-handbook",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.3141,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'student-handbook' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.3141 < 0.9)"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "timestamp": "2026-11-23T20:14:34.204237+00:00",
+  "batch_label": "batchB",
+  "embedding_version": "lexical-proj-v1",
+  "total_scanned": 10,
+  "passed_count": 3,
+  "quarantined_count": 7,
+  "archived_count": 1,
+  "per_check_summary": {
+    "quality": {
+      "passed": 7,
+      "failed": 3
+    },
+    "completeness": {
+      "passed": 8,
+      "failed": 2
+    },
+    "recency": {
+      "passed": 9,
+      "failed": 2
+    },
+    "uniqueness": {
+      "passed": 7,
+      "failed": 3
+    }
+  },
+  "records": [
+    {
+      "filename": "doc_b01_exact_dup1.md",
+      "source": "academic-rules-2026.md",
+      "doc_family": "academic-rules",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[UNIQUENESS FAIL] Exact duplicate of existing document: academic-rules-2026.md",
+      "max_similarity": 1.0,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": false,
+          "reason": "superseded by academic-rules-2027.md dated 2027-01-01"
+        },
+        "uniqueness": {
+          "passed": false,
+          "reason": "Exact duplicate of existing document: academic-rules-2026.md"
+        }
+      }
+    },
+    {
+      "filename": "doc_b02_exact_dup2.md",
+      "source": "fee-structure-2026.md",
+      "doc_family": "fee-structure",
+      "doc_version": "2026-27",
+      "date": "2026-07-01",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[UNIQUENESS FAIL] Exact duplicate of existing document: fee-structure-2026.md",
+      "max_similarity": 1.0,
+      "most_similar_doc": "fee-structure-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'fee-structure' (version 2026-27)"
+        },
+        "uniqueness": {
+          "passed": false,
+          "reason": "Exact duplicate of existing document: fee-structure-2026.md"
+        }
+      }
+    },
+    {
+      "filename": "doc_b03_near_dup.md",
+      "source": "student-handbook-near-duplicate.md",
+      "doc_family": "student-handbook-near-duplicate",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[UNIQUENESS FAIL] Near-duplicate of student-handbook-2026.md (cosine similarity: 0.9631 >= 0.9)",
+      "max_similarity": 0.9631,
+      "most_similar_doc": "student-handbook-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'student-handbook-near-duplicate' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": false,
+          "reason": "Near-duplicate of student-handbook-2026.md (cosine similarity: 0.9631 >= 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b04_corrupt_truncated.md",
+      "source": "corrupted-policy.md",
+      "doc_family": "corrupted-policy",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[QUALITY FAIL] Extraction failure or truncation marker detected in body; [COMPLETENESS FAIL] Document body appears abruptly truncated (<3 lines or trailing ellipsis)",
+      "max_similarity": 0.156,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": false,
+          "reason": "Extraction failure or truncation marker detected in body"
+        },
+        "completeness": {
+          "passed": false,
+          "reason": "Document body appears abruptly truncated (<3 lines or trailing ellipsis)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'corrupted-policy' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.1560 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b05_missing_meta.md",
+      "source": "doc_b05_missing_meta.md",
+      "doc_family": "doc_b05_missing_meta",
+      "doc_version": "unknown",
+      "date": "unknown",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[COMPLETENESS FAIL] Missing required metadata fields: source, title, page_count, doc_version, date",
+      "max_similarity": 0.191,
+      "most_similar_doc": "prospectus-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": false,
+          "reason": "Missing required metadata fields: source, title, page_count, doc_version, date"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'doc_b05_missing_meta' (version )"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.1910 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b06_newer_version.md",
+      "source": "academic-rules-2027.md",
+      "doc_family": "academic-rules",
+      "doc_version": "2027-01",
+      "date": "2027-01-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.2967,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'academic-rules' (version 2027-01)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.2967 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b07_prompt_injection.md",
+      "source": "student-advisory-injection.md",
+      "doc_family": "student-advisory-injection",
+      "doc_version": "2026-06",
+      "date": "2026-06-15",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[QUALITY FAIL] Prompt injection attempt detected: 'system\\s+(?:prompt|override)'",
+      "max_similarity": 0.2712,
+      "most_similar_doc": "academic-rules-2026.md",
+      "checks": {
+        "quality": {
+          "passed": false,
+          "reason": "Prompt injection attempt detected: 'system\\s+(?:prompt|override)'"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'student-advisory-injection' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.2712 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b08_garbled_encoding.md",
+      "source": "corrupted-encoding.md",
+      "doc_family": "corrupted-encoding",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": false,
+      "action": "quarantined",
+      "quarantined": true,
+      "quarantine_reason": "[QUALITY FAIL] Extraction failure or truncation marker detected in body",
+      "max_similarity": 0.0,
+      "most_similar_doc": null,
+      "checks": {
+        "quality": {
+          "passed": false,
+          "reason": "Extraction failure or truncation marker detected in body"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'corrupted-encoding' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.0000 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b09_valid_ai_ethics.md",
+      "source": "ai-ethics-policy-2026.md",
+      "doc_family": "ai-ethics-policy",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.2956,
+      "most_similar_doc": "student-handbook-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'ai-ethics-policy' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.2956 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "doc_b10_valid_hostel.md",
+      "source": "hostel-transport-rules-2026.md",
+      "doc_family": "hostel-transport-rules",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": true,
+      "action": "accepted",
+      "quarantined": false,
+      "quarantine_reason": null,
+      "max_similarity": 0.3481,
+      "most_similar_doc": "student-handbook-2026.md",
+      "checks": {
+        "quality": {
+          "passed": true,
+          "reason": "Quality check passed (clean, readable text)"
+        },
+        "completeness": {
+          "passed": true,
+          "reason": "Completeness check passed (metadata valid and structure intact)"
+        },
+        "recency": {
+          "passed": true,
+          "reason": "Document is current for family 'hostel-transport-rules' (version 2026-06)"
+        },
+        "uniqueness": {
+          "passed": true,
+          "reason": "Document is unique (max similarity 0.3481 < 0.9)"
+        }
+      }
+    },
+    {
+      "filename": "academic-rules-2026.md",
+      "source": "academic-rules-2026.md",
+      "doc_family": "academic-rules",
+      "doc_version": "2026-06",
+      "date": "2026-06-01",
+      "passed_all": false,
+      "action": "archived",
+      "quarantined": false,
+      "quarantine_reason": "superseded by academic-rules-2027.md dated 2027-01-01",
+      "max_similarity": 0.0,
+      "most_similar_doc": null,
+      "checks": {
+        "recency": {
+          "passed": false,
+          "reason": "superseded by academic-rules-2027.md dated 2027-01-01"
+        }
+      }
+    }
+  ]
+}
