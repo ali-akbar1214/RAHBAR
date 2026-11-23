@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ragops-eval-bad-job
+  namespace: ragops
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: evaluator
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          command:
+            - python
+            - eval/run_eval.py
+            - --gate
+            - --label
+            - k8s-candidate-bad
+            - --collection
+            - fast-policies-bad
+            - --embedding-version
+            - lexical-proj-v1
+            - --require-llm
+          envFrom:
+            - configMapRef:
+                name: ragops-env-config
+            - configMapRef:
+                name: ragops-gate-config
+            - secretRef:
+                name: ragops-secret
+          env:
+            - name: TRACES_DIR
+              value: "/tmp/eval_traces"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+              readOnly: true
+            - name: results-vol
+              mountPath: /results
+            - name: scratch-traces
+              mountPath: /tmp/eval_traces
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: ragops-data-pvc
+        - name: results-vol
+          persistentVolumeClaim:
+            claimName: ragops-results-pvc
+        - name: scratch-traces
+          emptyDir: {}

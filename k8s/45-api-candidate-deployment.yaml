@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ragops-api-candidate
+  namespace: ragops
+  labels:
+    app: ragops-api-candidate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ragops-api-candidate
+  template:
+    metadata:
+      labels:
+        app: ragops-api-candidate
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: api
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ragops-env-config
+            - configMapRef:
+                name: ragops-gate-config
+            - secretRef:
+                name: ragops-secret
+          env:
+            - name: COLLECTION_NAME
+              value: "fast-policies-v2"
+            - name: EMBEDDING_VERSION
+              value: "lexical-proj-v2"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            failureThreshold: 10
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+              readOnly: true
+            - name: traces-vol
+              mountPath: /traces
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: ragops-data-pvc
+        - name: traces-vol
+          persistentVolumeClaim:
+            claimName: ragops-traces-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ragops-api-candidate
+  namespace: ragops
+spec:
+  selector:
+    app: ragops-api-candidate
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP

@@ -1,0 +1,107 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ragops-indexer-job
+  namespace: ragops
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      initContainers:
+        - name: seed-lake
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /data/lake/incoming /data/lake/raw /data/lake/quarantine /data/lake/archive /data/index
+              if [ -z "$(ls -A /data/lake/raw 2>/dev/null)" ]; then
+                echo "[Init] Seeding /data/lake/raw from /app/seed_corpus/raw..."
+                cp -r /app/seed_corpus/raw/*.md /data/lake/raw/
+              else
+                echo "[Init] /data/lake/raw already populated; skipping seed."
+              fi
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+      containers:
+        - name: indexer
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          command: ["python", "scripts/ingest_job.py"]
+          envFrom:
+            - configMapRef:
+                name: ragops-env-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+            - name: results-vol
+              mountPath: /results
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: ragops-data-pvc
+        - name: results-vol
+          persistentVolumeClaim:
+            claimName: ragops-results-pvc
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ragops-indexer-cronjob
+  namespace: ragops
+spec:
+  schedule: "0 2 * * 0"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            fsGroup: 1000
+          containers:
+            - name: indexer
+              image: ragops:v1
+              imagePullPolicy: IfNotPresent
+              command: ["python", "scripts/ingest_job.py"]
+              envFrom:
+                - configMapRef:
+                    name: ragops-env-config
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "256Mi"
+              volumeMounts:
+                - name: data-vol
+                  mountPath: /data
+                - name: results-vol
+                  mountPath: /results
+          volumes:
+            - name: data-vol
+              persistentVolumeClaim:
+                claimName: ragops-data-pvc
+            - name: results-vol
+              persistentVolumeClaim:
+                claimName: ragops-results-pvc

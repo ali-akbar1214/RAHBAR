@@ -1,0 +1,13 @@
+.git
+.pytest_cache
+__pycache__
+*.pyc
+SCD A2
+key.env
+.env
+*.env
+report
+data
+traces/*.jsonl
+eval/results
+tests

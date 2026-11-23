@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ragops-indexer-candidate-v2
+  namespace: ragops
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: indexer
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          command: ["python", "scripts/ingest_job.py"]
+          envFrom:
+            - configMapRef:
+                name: ragops-env-config
+          env:
+            - name: COLLECTION_NAME
+              value: "fast-policies-v2"
+            - name: EMBEDDING_VERSION
+              value: "lexical-proj-v2"
+            - name: CHUNK_SIZE
+              value: "500"
+            - name: CHUNK_OVERLAP
+              value: "100"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+            - name: results-vol
+              mountPath: /results
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: ragops-data-pvc
+        - name: results-vol
+          persistentVolumeClaim:
+            claimName: ragops-results-pvc

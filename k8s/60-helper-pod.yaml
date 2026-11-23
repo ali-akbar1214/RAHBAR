@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ragops-helper
+  namespace: ragops
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
+  containers:
+    - name: helper
+      image: busybox:1.36
+      command: ["sleep", "infinity"]
+      resources:
+        requests:
+          cpu: "20m"
+          memory: "32Mi"
+        limits:
+          cpu: "100m"
+          memory: "64Mi"
+      volumeMounts:
+        - name: data-vol
+          mountPath: /data
+        - name: results-vol
+          mountPath: /results
+        - name: traces-vol
+          mountPath: /traces
+  volumes:
+    - name: data-vol
+      persistentVolumeClaim:
+        claimName: ragops-data-pvc
+    - name: results-vol
+      persistentVolumeClaim:
+        claimName: ragops-results-pvc
+    - name: traces-vol
+      persistentVolumeClaim:
+        claimName: ragops-traces-pvc
