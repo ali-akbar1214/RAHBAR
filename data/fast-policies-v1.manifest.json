@@ -1,0 +1,19 @@
+{
+  "collection_name": "fast-policies-v1",
+  "embedding_model": "lexical-proj-v1",
+  "embedding_version": "lexical-proj-v1",
+  "embedding_dim": 256,
+  "embedding_description": "Lexical projection v1 (word unigrams + bigrams, dim=256)",
+  "chunk_size": 320,
+  "chunk_overlap": 80,
+  "total_chunks": 41,
+  "active_chunks": 36,
+  "document_hashes": {
+    "academic-rules-2023.md": "70086f3670d6a9cc9ddee7087520d7dd7ad91405055018ae31bda9166e656c94",
+    "academic-rules-2026.md": "9a05ae7be8a7a6cbd60f2d72041f5d114a424ee89867eecb4d99e37a8968cab1",
+    "fee-structure-2026.md": "e0aac2067e3aadeef52dba5e90f84797daa1e19832d734786dccaaf1f43f3997",
+    "prospectus-2026.md": "4dde00767559dc27f06f62decb40f3896666ac2a3298febca059a8ef63395999",
+    "student-handbook-2026.md": "2bf02102594a5e317601d045ce20f613f5ad8bb5cc2fef7caaf9e8ff81a0b643"
+  },
+  "updated_at": "2026-11-23T20:14:32.853980+00:00"
+}

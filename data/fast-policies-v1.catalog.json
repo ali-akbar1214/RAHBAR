@@ -1,0 +1,42 @@
+{
+  "academic-rules-2023.md": {
+    "hash": "70086f3670d6a9cc9ddee7087520d7dd7ad91405055018ae31bda9166e656c94",
+    "source": "academic-rules-2023.md",
+    "doc_version": "2023-08",
+    "superseded": true,
+    "chunk_count": 5,
+    "indexed_at": "2026-11-22T11:35:27.654526+00:00"
+  },
+  "academic-rules-2026.md": {
+    "hash": "9a05ae7be8a7a6cbd60f2d72041f5d114a424ee89867eecb4d99e37a8968cab1",
+    "source": "academic-rules-2026.md",
+    "doc_version": "2026-06",
+    "superseded": false,
+    "chunk_count": 16,
+    "indexed_at": "2026-11-22T11:35:27.667952+00:00"
+  },
+  "fee-structure-2026.md": {
+    "hash": "e0aac2067e3aadeef52dba5e90f84797daa1e19832d734786dccaaf1f43f3997",
+    "source": "fee-structure-2026.md",
+    "doc_version": "2026-27",
+    "superseded": false,
+    "chunk_count": 6,
+    "indexed_at": "2026-11-22T11:35:27.677015+00:00"
+  },
+  "prospectus-2026.md": {
+    "hash": "4dde00767559dc27f06f62decb40f3896666ac2a3298febca059a8ef63395999",
+    "source": "prospectus-2026.md",
+    "doc_version": "2026",
+    "superseded": false,
+    "chunk_count": 5,
+    "indexed_at": "2026-11-22T11:35:27.684425+00:00"
+  },
+  "student-handbook-2026.md": {
+    "hash": "2bf02102594a5e317601d045ce20f613f5ad8bb5cc2fef7caaf9e8ff81a0b643",
+    "source": "student-handbook-2026.md",
+    "doc_version": "2026-06",
+    "superseded": false,
+    "chunk_count": 9,
+    "indexed_at": "2026-11-22T11:35:27.694215+00:00"
+  }
+}
