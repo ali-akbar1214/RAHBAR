@@ -18,11 +18,11 @@
       "max": 0.6443
     }
   },
-  "covered_count": 31,
-  "uncovered_count": 9,
-  "coverage_share": 0.775,
+  "covered_count": 33,
+  "uncovered_count": 7,
+  "coverage_share": 0.825,
   "target_threshold": 0.85,
-  "similarity_threshold": 0.18,
+  "similarity_threshold": 0.1618,
   "gap_detected": true,
   "uncovered_queries": [
     {
@@ -58,22 +58,6 @@
       "nearest_golden_q": "How many consecutive semesters on academic warning or probation result in academic dismissal?"
     },
     {
-      "id": "uq22",
-      "domain": "in_domain",
-      "query": "Where are the different campuses of FAST located in Pakistan?",
-      "best_score": 0.1625,
-      "nearest_golden_id": "q26",
-      "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
-    },
-    {
-      "id": "uq27",
-      "domain": "in_domain",
-      "query": "What is the penalty for tampering with campus computer hardware?",
-      "best_score": 0.1791,
-      "nearest_golden_id": "q19",
-      "nearest_golden_q": "What is the cafeteria menu and price list for Chinese dishes on the Peshawar campus?"
-    },
-    {
       "id": "uq31",
       "domain": "out_of_domain",
       "query": "What is the cheapest flight ticket from Lahore to London Heathrow?",
@@ -100,72 +84,6 @@
   ],
   "clusters": [
     {
-      "cluster_id": 5,
-      "label_terms": [
-        "campus",
-        "penalty",
-        "rent",
-        "off"
-      ],
-      "cluster_label": "campus, penalty, rent, off",
-      "size": 3,
-      "queries": [
-        {
-          "id": "uq34",
-          "domain": "out_of_domain",
-          "query": "How do I rent an off-campus private apartment in sector F-11 Islamabad?",
-          "best_score": 0.1336,
-          "nearest_golden_id": "q19",
-          "nearest_golden_q": "What is the cafeteria menu and price list for Chinese dishes on the Peshawar campus?"
-        },
-        {
-          "id": "uq06",
-          "domain": "in_domain",
-          "query": "What is the penalty if caught cheating on a programming assignment?",
-          "best_score": 0.1325,
-          "nearest_golden_id": "q20",
-          "nearest_golden_q": "What are the admission cutoff merit scores for the 2012 MBBS programme at King Edward Medical University?"
-        },
-        {
-          "id": "uq27",
-          "domain": "in_domain",
-          "query": "What is the penalty for tampering with campus computer hardware?",
-          "best_score": 0.1791,
-          "nearest_golden_id": "q19",
-          "nearest_golden_q": "What is the cafeteria menu and price list for Chinese dishes on the Peshawar campus?"
-        }
-      ]
-    },
-    {
-      "cluster_id": 3,
-      "label_terms": [
-        "courses",
-        "cgpa",
-        "above",
-        "different"
-      ],
-      "cluster_label": "courses, cgpa, above, different",
-      "size": 2,
-      "queries": [
-        {
-          "id": "uq09",
-          "domain": "in_domain",
-          "query": "Can I take 6 courses if my CGPA is above 3.0?",
-          "best_score": 0.1386,
-          "nearest_golden_id": "q23",
-          "nearest_golden_q": "If a student drops a 3-credit BS course on the 14th calendar day of classes, what exact net tuition amount in PKR is refunded?"
-        },
-        {
-          "id": "uq22",
-          "domain": "in_domain",
-          "query": "Where are the different campuses of FAST located in Pakistan?",
-          "best_score": 0.1625,
-          "nearest_golden_id": "q26",
-          "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
-        }
-      ]
-    },
-    {
       "cluster_id": 4,
       "label_terms": [
         "years",
@@ -173,7 +91,7 @@
         "finish",
         "software"
       ],
-      "cluster_label": "years, have, finish, software",
+      "cluster_label": "Study duration & dismissal",
       "size": 2,
       "queries": [
         {
@@ -195,16 +113,24 @@
       ]
     },
     {
-      "cluster_id": 1,
+      "cluster_id": 5,
       "label_terms": [
-        "cheapest",
-        "flight",
-        "ticket",
-        "lahore"
+        "penalty",
+        "caught",
+        "cheating",
+        "programming"
       ],
-      "cluster_label": "cheapest, flight, ticket, lahore",
-      "size": 1,
+      "cluster_label": "Travel & flights & Academic integrity",
+      "size": 2,
       "queries": [
+        {
+          "id": "uq06",
+          "domain": "in_domain",
+          "query": "What is the penalty if caught cheating on a programming assignment?",
+          "best_score": 0.1325,
+          "nearest_golden_id": "q20",
+          "nearest_golden_q": "What are the admission cutoff merit scores for the 2012 MBBS programme at King Edward Medical University?"
+        },
         {
           "id": "uq31",
           "domain": "out_of_domain",
@@ -216,14 +142,55 @@
       ]
     },
     {
+      "cluster_id": 1,
+      "label_terms": [
+        "courses",
+        "cgpa",
+        "above"
+      ],
+      "cluster_label": "Course overload & CGPA",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq09",
+          "domain": "in_domain",
+          "query": "Can I take 6 courses if my CGPA is above 3.0?",
+          "best_score": 0.1386,
+          "nearest_golden_id": "q23",
+          "nearest_golden_q": "If a student drops a 3-credit BS course on the 14th calendar day of classes, what exact net tuition amount in PKR is refunded?"
+        }
+      ]
+    },
+    {
       "cluster_id": 2,
+      "label_terms": [
+        "rent",
+        "off",
+        "campus",
+        "private"
+      ],
+      "cluster_label": "Off-campus housing",
+      "size": 1,
+      "queries": [
+        {
+          "id": "uq34",
+          "domain": "out_of_domain",
+          "query": "How do I rent an off-campus private apartment in sector F-11 Islamabad?",
+          "best_score": 0.1336,
+          "nearest_golden_id": "q19",
+          "nearest_golden_q": "What is the cafeteria menu and price list for Chinese dishes on the Peshawar campus?"
+        }
+      ]
+    },
+    {
+      "cluster_id": 3,
       "label_terms": [
         "configure",
         "pytorch",
         "model",
         "distributed"
       ],
-      "cluster_label": "configure, pytorch, model, distributed",
+      "cluster_label": "ML tooling",
       "size": 1,
       "queries": [
         {
@@ -241,6 +208,6 @@
   "golden_path": "eval/golden.jsonl",
   "golden_count": 26,
   "embedding_version": "lexical-proj-v2",
-  "threshold_rationale": "Derived from Part B module data (lexical-proj-v2): mean_paraphrase=0.0974, mean_unrelated=0.0368 -> threshold=0.1800",
-  "timestamp": "2026-11-23T20:15:14.090211+00:00"
+  "threshold_rationale": "Derived from Part B lexical-proj-v2 module data: mean_paraphrase=0.1618, mean_unrelated=0.0033, midpoint=0.0826, p10=0.0046 -> threshold=0.1618",
+  "timestamp": "2026-11-24T17:04:26.149202+00:00"
 }

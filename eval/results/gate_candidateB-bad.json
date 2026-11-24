@@ -1,6 +1,6 @@
 {
   "candidate": "candidateB-bad",
-  "timestamp": "2026-11-23T20:18:20.385775+00:00",
+  "timestamp": "2026-11-24T17:11:54.805248+00:00",
   "collection_name": "cand-candidateB-bad",
   "embedding_version": "lexical-proj-v1",
   "verdict": "REJECTED / FAIL",
@@ -29,6 +29,14 @@
       "passed": true
     },
     {
+      "rule": "max_false_abstention_rate",
+      "threshold": "<= 0.25",
+      "measured": 1.0,
+      "baseline": 0.2,
+      "candidate": 1.0,
+      "passed": false
+    },
+    {
       "rule": "min_faithfulness",
       "threshold": ">= 0.8",
       "measured": 0.2308,
@@ -43,7 +51,7 @@
     {
       "rule": "max_latency_p95_ms",
       "threshold": "<= 7000.0",
-      "measured": 2699.45,
+      "measured": 715.53,
       "passed": true
     },
     {

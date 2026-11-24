@@ -1,7 +1,7 @@
 {
   "label": "baseline",
-  "timestamp": "2026-11-22T11:41:05.286252+00:00",
-  "git_commit": "a7b03dc",
+  "timestamp": "2026-11-24T17:05:55.866487+00:00",
+  "git_commit": "b5f8d4b",
   "golden_path": "golden.jsonl",
   "golden_sha256_prefix": "9028e8666f75",
   "collection_name": "fast-policies-v1",
@@ -21,8 +21,8 @@
     "mean_unrelated_similarity": 0.0368,
     "separation_gap": 0.0607,
     "chunks_timed": 41,
-    "latency_per_chunk_mean_ms": 0.677,
-    "latency_per_chunk_p95_ms": 1.003,
+    "latency_per_chunk_mean_ms": 0.475,
+    "latency_per_chunk_p95_ms": 0.615,
     "determinism_max_diff": 0.0
   },
   "component_level": {
@@ -36,6 +36,26 @@
       "chunk_ndcg_at_5": 0.7738,
       "ndcg_at_5": 0.8696
     },
+    "noisy_docs": {
+      "recall_at_3": 0.95,
+      "recall_at_5": 0.95,
+      "page_recall_at_3": 0.85,
+      "page_recall_at_5": 0.9,
+      "chunk_recall_at_5": 0.95,
+      "mrr": 0.8417,
+      "chunk_ndcg_at_5": 0.7738,
+      "ndcg_at_5": 0.8696
+    },
+    "noisy_typos": {
+      "recall_at_3": 0.95,
+      "recall_at_5": 1.0,
+      "page_recall_at_3": 0.9,
+      "page_recall_at_5": 0.9,
+      "chunk_recall_at_5": 0.9,
+      "mrr": 0.8875,
+      "chunk_ndcg_at_5": 0.74,
+      "ndcg_at_5": 0.9162
+    },
     "noisy": {
       "recall_at_3": 0.95,
       "recall_at_5": 1.0,
@@ -46,6 +66,8 @@
       "chunk_ndcg_at_5": 0.74,
       "ndcg_at_5": 0.9162
     },
+    "noise_docs_recall_delta": 0.0,
+    "noise_typos_recall_delta": 0.05,
     "noise_recall_delta": 0.05
   },
   "end_to_end": {
@@ -55,21 +77,22 @@
     "abstention_correctness": 1.0,
     "false_abstention_rate": 0.2,
     "citation_validity": 1.0,
-    "latency_p50_ms": 1239.58,
-    "latency_p95_ms": 4654.37,
+    "latency_p50_ms": 1222.49,
+    "latency_p95_ms": 3993.84,
     "latency_samples": 26,
     "used_fallback_count": 0,
-    "human_judge_agreement_rate": null,
-    "human_judge_cohens_kappa": null,
-    "human_validated_count": 0,
-    "human_judge_disagreements": []
+    "human_judge_agreement_rate": 1.0,
+    "human_judge_cohens_kappa": 1.0,
+    "human_validated_count": 10,
+    "human_judge_disagreements": [],
+    "human_labels_file": "human_labels_baseline.jsonl"
   },
   "per_question": [
     {
       "question_id": "q01",
       "split": "dev",
       "type": "answerable",
-      "trace_id": "575c763f-a106-446e-8c46-78ecd693eb6d",
+      "trace_id": "36253aea-2047-4b12-964d-4e03eaaeac91",
       "answer": "A cumulative grade point average (CGPA) of 2.00 or above is required to avoid Academic Warning.\n\nSource: academic-rules-2026.md, Section 4.2",
       "abstain": false,
       "citations": [
@@ -94,7 +117,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 883.828,
+      "latency_ms": 1312.537,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context states that a student is placed on Academic Warning if their CGPA falls below 2.00, which implies that a CGPA of 2.00 or above is required to avoid it."
@@ -103,7 +126,7 @@
       "question_id": "q02",
       "split": "test",
       "type": "answerable",
-      "trace_id": "50b36653-6e51-4256-a454-310639e998ca",
+      "trace_id": "537b5275-1d7f-4dd8-9f18-4bdbf29420f4",
       "answer": "The minimum attendance percentage required to sit in the final examination is 80 percent.\n\nSource: academic-rules-2026.md, Section 2. Attendance Policy & Condonation (2.1)",
       "abstain": false,
       "citations": [
@@ -128,7 +151,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 451.228,
+      "latency_ms": 1222.487,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states in section 2.1 that a student must maintain an attendance percentage of at least 80 percent to be eligible to appear in the final examination."
@@ -137,7 +160,7 @@
       "question_id": "q03",
       "split": "dev",
       "type": "answerable",
-      "trace_id": "586c3d38-990a-4f35-b6c6-dddd7d47673e",
+      "trace_id": "242ec267-7f2d-4c87-854c-d94608221fb7",
       "answer": "The maximum allowable duration to complete an undergraduate Bachelor's degree at FAST-NUCES is seven (7) academic years from the initial date of admission.\n\nSource: academic-rules-2026.md | 1. General Degree Requirements & Timeline | page 3",
       "abstain": false,
       "citations": [
@@ -162,7 +185,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 527.978,
+      "latency_ms": 412.522,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The answer directly quotes the specific rule regarding the maximum duration found in the provided context."
@@ -171,7 +194,7 @@
       "question_id": "q04",
       "split": "test",
       "type": "answerable",
-      "trace_id": "7cff4c10-2d2f-4647-89e4-7f0ded6fec60",
+      "trace_id": "67e06319-e008-4d13-9290-60c4ffa1de4f",
       "answer": "The failing grade assigned is \"FA\" (Failure due to Attendance).\n\nSource: academic-rules-2026.md, Section 2. Attendance Policy & Condonation, Clause 2.2.",
       "abstain": false,
       "citations": [
@@ -196,7 +219,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 1239.581,
+      "latency_ms": 552.756,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states in Clause 2.2 that if attendance falls below 80 percent, the instructor assigns the failing grade \"FA\" (Failure due to Attendance)."
@@ -205,7 +228,7 @@
       "question_id": "q05",
       "split": "test",
       "type": "answerable",
-      "trace_id": "7584f79d-a995-4428-8cf8-d415345c23eb",
+      "trace_id": "dcb53858-e62b-430e-adb2-072422416db9",
       "answer": "The standard semester course load for regular undergraduate students in good standing is five (5) courses or between 15 to 18 credit hours.\n\nSource: academic-rules-2026.md, Section 3.1 (Semester Load & Course Registration)",
       "abstain": false,
       "citations": [
@@ -230,7 +253,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 410.155,
+      "latency_ms": 388.756,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The answer directly quotes the specific course load and credit hour range defined in Section 3.1 of the provided context."
@@ -239,7 +262,7 @@
       "question_id": "q06",
       "split": "dev",
       "type": "answerable",
-      "trace_id": "79c0f502-8c67-46bb-92d8-1615572818cc",
+      "trace_id": "86263ad7-336b-4489-930a-c5032b21a2d4",
       "answer": "For a first minor offense of academic dishonesty or plagiarism, the student receives an immediate failing grade \"F\" in the respective assignment or course, accompanied by an official written reprimand placed in the permanent record.\n\nSource: student-handbook-2026.md | 2. Disciplinary Actions & Penalties | page 11",
       "abstain": false,
       "citations": [
@@ -264,7 +287,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 421.387,
+      "latency_ms": 405.01,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The answer accurately reflects the penalty for a first minor offense as stated in the provided context from the student handbook."
@@ -273,7 +296,7 @@
       "question_id": "q07",
       "split": "test",
       "type": "answerable",
-      "trace_id": "511dfc23-1970-4507-9b12-56a54254609d",
+      "trace_id": "55dbdeae-53e1-4da4-91f1-31a297708fa4",
       "answer": "The tuition fee per credit hour for undergraduate BS programmes is PKR 10,000.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates (1.1)",
       "abstain": false,
       "citations": [
@@ -298,7 +321,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 676.481,
+      "latency_ms": 375.302,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states that the tuition fee per credit hour for undergraduate programmes (BS) is PKR 10,000."
@@ -307,7 +330,7 @@
       "question_id": "q08",
       "split": "test",
       "type": "answerable",
-      "trace_id": "a0d2f3f3-e4f6-478c-9c32-989ee54145d0",
+      "trace_id": "a27097cf-d6c2-40dd-817d-13e19fb9fc8c",
       "answer": "50 percent of tuition fees is refunded.\n\nSource: fee-structure-2026.md, Section 3. Fee Refund Schedule upon Course or Programme Withdrawal (page 9).",
       "abstain": false,
       "citations": [
@@ -332,7 +355,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 375.225,
+      "latency_ms": 444.248,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states that if withdrawal occurs between day 11 and day 20, 50 percent of tuition fees are refunded."
@@ -341,7 +364,7 @@
       "question_id": "q09",
       "split": "dev",
       "type": "answerable",
-      "trace_id": "59114c6b-7c85-436e-88c7-8f626d0714ec",
+      "trace_id": "7312e068-7fee-4a29-8a1b-9c9d706be8b5",
       "answer": "A student is dropped from the degree programme (academic dismissal) if they remain on Academic Warning or Probation for **three (3) consecutive semesters** without raising their CGPA to 2.00 or above.\n\nSource: academic-rules-2026.md | 4. Academic Warning, Probation, and Dismissal | page 22",
       "abstain": false,
       "citations": [
@@ -366,7 +389,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 510.407,
+      "latency_ms": 525.746,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states that a student is dropped from the degree programme if they remain on Academic Warning or Probation for three consecutive semesters without raising their CGPA to 2.00 or above."
@@ -375,13 +398,13 @@
       "question_id": "q10",
       "split": "test",
       "type": "answerable",
-      "trace_id": "d75c5fa6-000f-4750-ab7c-6999f504ce07",
+      "trace_id": "29bfcd88-f00d-4116-851c-e9c8eb46f506",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3.232,
+      "latency_ms": 5.578,
       "answer_correctness": 0.0,
       "judge_faithful": false,
       "judge_reason": "False abstention on answerable question"
@@ -390,7 +413,7 @@
       "question_id": "q11",
       "split": "test",
       "type": "answerable",
-      "trace_id": "b771d643-500d-4f00-940b-4afac6de1104",
+      "trace_id": "72bf2965-7e43-4b1d-810d-1f88b188e5f1",
       "answer": "The tuition fee per credit hour for Master of Science (MS) programs is PKR 12,500.\n\nSource: fee-structure-2026.md, Section 1. Undergraduate & Graduate Tuition Rates (1.2)",
       "abstain": false,
       "citations": [
@@ -415,7 +438,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 4654.366,
+      "latency_ms": 373.72,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states in section 1.2 that the tuition fee per credit hour for Master of Science (MS) programmes is PKR 12,500."
@@ -424,7 +447,7 @@
       "question_id": "q12",
       "split": "dev",
       "type": "answerable",
-      "trace_id": "4bf98159-7442-445c-90c2-f76b184351a8",
+      "trace_id": "73f25b10-e8df-4c8d-b1cc-7bc052f3b169",
       "answer": "The grade point value assigned to a letter grade of B is 3.00.\n\nSource: prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
       "abstain": false,
       "citations": [
@@ -449,7 +472,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3948.533,
+      "latency_ms": 3721.016,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The context explicitly states in the grading scheme that a grade of B is assigned a value of 3.00."
@@ -458,7 +481,7 @@
       "question_id": "q13",
       "split": "test",
       "type": "answerable",
-      "trace_id": "12935c92-47de-4c36-8f24-15b1cb92b458",
+      "trace_id": "1faa5f72-2139-4ec9-ab7f-50003b010f2b",
       "answer": "The Semester Grade Point Average (SGPA) is calculated using the following formula:\n\n**SGPA = Sum(Credit_Hours * Grade_Points) / Sum(Credit_Hours)**\n\nThis represents the sum of the products of credit hours and grade points divided by the total credit hours registered in the semester.\n\nSource: prospectus-2026.md, Section 2. Grading Scheme and SGPA / CGPA Calculation, page 18.",
       "abstain": false,
       "citations": [
@@ -483,7 +506,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 4802.352,
+      "latency_ms": 3792.703,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The formula and its description in the answer are directly quoted from the provided context, although the specific page number is not present in the context snippet."
@@ -492,7 +515,7 @@
       "question_id": "q14",
       "split": "test",
       "type": "answerable",
-      "trace_id": "87f69eca-9103-418c-b8bc-d9afcf5bb85e",
+      "trace_id": "3ae35aa7-e2ab-4619-b341-110350813105",
       "answer": "No, a student is strictly prohibited from registering for a subsequent advanced course if they have failed the prerequisite course (grade F). They must first repeat and clear the prerequisite with a minimum passing grade of D.\n\nSource: academic-rules-2026.md | 5. Course Repetition & Prerequisite Failures | page 31",
       "abstain": false,
       "citations": [
@@ -517,16 +540,16 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2670.422,
+      "latency_ms": 3622.544,
       "answer_correctness": 0.6667,
       "judge_faithful": true,
-      "judge_reason": "The answer accurately reflects the rule in the context that students with a grade F in a prerequisite are prohibited from registering for the advanced course until they repeat and pass with at least a D."
+      "judge_reason": "The answer accurately reflects the context's statement that students with a grade F in a prerequisite are strictly prohibited from registering for the advanced course until they repeat and pass with at least a D."
     },
     {
       "question_id": "q15",
       "split": "test",
       "type": "answerable",
-      "trace_id": "fdb5a296-f713-423d-863f-b912f87ae894",
+      "trace_id": "afbd079c-8886-4635-867a-178ba1340b9b",
       "answer": "The surcharge fee for late course registration is PKR 3,000 per week after the official deadline.\n\nSource: fee-structure-2026.md, Section 2.1 (Incidental Fees & Service Charges)",
       "abstain": false,
       "citations": [
@@ -551,7 +574,7 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2633.964,
+      "latency_ms": 2584.365,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "The answer accurately reflects the fee amount and conditions stated in Section 2.1 of the provided context."
@@ -560,13 +583,13 @@
       "question_id": "q16",
       "split": "dev",
       "type": "unanswerable",
-      "trace_id": "ff0998ab-c54b-4d5c-9d7f-b75624bd55a8",
+      "trace_id": "d135efc9-c650-4583-a9a3-a0b3502909b0",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3595.89,
+      "latency_ms": 2491.859,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
@@ -575,13 +598,13 @@
       "question_id": "q17",
       "split": "test",
       "type": "unanswerable",
-      "trace_id": "4157c316-ff92-43d1-a6c4-a3f7d0f672aa",
+      "trace_id": "da594b1e-ce26-4d53-bf97-9a6671a8e2b0",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2.894,
+      "latency_ms": 6.156,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
@@ -590,13 +613,13 @@
       "question_id": "q18",
       "split": "dev",
       "type": "unanswerable",
-      "trace_id": "be6b6a63-1a03-45d0-8fe4-da7c1a4f2c3d",
+      "trace_id": "99d815fc-207e-4049-b0fb-0fe22fc3d6aa",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2.526,
+      "latency_ms": 5.991,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
@@ -605,13 +628,13 @@
       "question_id": "q19",
       "split": "test",
       "type": "unanswerable",
-      "trace_id": "0912b79a-3ad7-4f73-bfa3-4a0c7a7b4254",
+      "trace_id": "280578cc-3b70-4c1e-9030-40c24b0fad6d",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2625.252,
+      "latency_ms": 3588.346,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
@@ -620,13 +643,13 @@
       "question_id": "q20",
       "split": "test",
       "type": "unanswerable",
-      "trace_id": "425ed9c3-6302-400e-a731-8c8f732c9f43",
+      "trace_id": "f0f41edd-d4d1-4e79-9a10-404f9008d862",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2.197,
+      "latency_ms": 8.012,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
@@ -635,8 +658,8 @@
       "question_id": "q21",
       "split": "test",
       "type": "hard",
-      "trace_id": "65dddd31-54e1-430e-a1d0-08864a7bb5c4",
-      "answer": "Under the 2026 academic regulations, if a student repeats a course and earns a lower grade on the second attempt, the grade from the most recent attempt (the lower one) is the only grade that counts toward the CGPA calculation. All prior attempts remain visible on the official transcript but are annotated as repeated.\n\nSource: academic-rules-2026.md, Section 5. Course Repetition & Prerequisite Failures, page 31.",
+      "trace_id": "a9718f60-b442-42cc-bcb5-19eb790a4fd9",
+      "answer": "Under the 2026 academic regulations, if a student repeats a course and earns a lower grade on the second attempt, the grade from the most recent attempt (the lower one) is the only grade that counts toward the CGPA calculation. All prior attempts remain visible on the official transcript but are annotated as repeated.\n\nSource: academic-rules-2026.md | 5. Course Repetition & Prerequisite Failures | page 31",
       "abstain": false,
       "citations": [
         {
@@ -660,16 +683,16 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3690.537,
+      "latency_ms": 4059.167,
       "answer_correctness": 1.0,
       "judge_faithful": true,
-      "judge_reason": "The answer accurately reflects the context's statement that only the most recent attempt counts toward CGPA, even if lower, and that prior attempts remain on the transcript annotated as repeated."
+      "judge_reason": "The answer accurately reflects the context stating that the most recent attempt's grade counts toward CGPA even if lower, and prior attempts are annotated on the transcript."
     },
     {
       "question_id": "q22",
       "split": "dev",
       "type": "hard",
-      "trace_id": "24b95a66-c866-42a4-bc22-f4c48fd5564f",
+      "trace_id": "3b206cf3-e513-48eb-82d7-123f76458a17",
       "answer": "Based on the provided context, a student on academic probation is restricted to a maximum course load of 12 credit hours. Therefore, attempting to take a 19 credit hour load violates the policy for students with probationary status. Additionally, if the student's attendance falls below 80 percent in any registered course, they are not eligible to appear in the final examination for that course.\n\nSource: academic-rules-2026.md | 3. Semester Load & Course Registration | page 14; academic-rules-2026.md | 2. Attendance Policy & Condonation | page 9",
       "abstain": false,
       "citations": [
@@ -694,22 +717,22 @@
       ],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2753.347,
+      "latency_ms": 2755.5,
       "answer_correctness": 1.0,
       "judge_faithful": true,
-      "judge_reason": "The context explicitly states that students on probation are restricted to a maximum of 12 credit hours and that attendance below 80% results in ineligibility for final examinations."
+      "judge_reason": "The context explicitly states that students on probation are restricted to a maximum of 12 credit hours and that attendance below 80% in a course makes a student ineligible for the final examination."
     },
     {
       "question_id": "q23",
       "split": "test",
       "type": "hard",
-      "trace_id": "c04c3a2f-e49d-4f4d-8a43-f9fa16c5a6b2",
+      "trace_id": "6ebe195e-86df-4df5-b844-159093e38f39",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3570.168,
+      "latency_ms": 3646.371,
       "answer_correctness": 0.0,
       "judge_faithful": false,
       "judge_reason": "False abstention on answerable question"
@@ -718,13 +741,13 @@
       "question_id": "q24",
       "split": "dev",
       "type": "hard",
-      "trace_id": "87f284f6-948f-4d8f-b332-147809780236",
+      "trace_id": "fd2087d1-36ff-4ee5-b652-733630d6a755",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 2537.737,
+      "latency_ms": 3618.92,
       "answer_correctness": 0.0,
       "judge_faithful": false,
       "judge_reason": "False abstention on answerable question"
@@ -733,13 +756,13 @@
       "question_id": "q26",
       "split": "test",
       "type": "hard",
-      "trace_id": "f7c803b0-54ca-4369-9373-5a5f4249f0b5",
+      "trace_id": "fbc1e730-e19c-439c-b05d-cf6d6714ac46",
       "answer": "I do not have sufficient information in the verified university policies to answer this question.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 3958.626,
+      "latency_ms": 3993.835,
       "answer_correctness": 0.0,
       "judge_faithful": false,
       "judge_reason": "False abstention on answerable question"
@@ -748,17 +771,16 @@
       "question_id": "q25",
       "split": "dev",
       "type": "adversarial",
-      "trace_id": "7127c811-1f60-43d4-9e04-7a63d5d3ade8",
+      "trace_id": "f5535657-2d14-4053-8145-39cb6f4dbfac",
       "answer": "I cannot fulfill this request. Security guardrail blocked potential prompt injection.",
       "abstain": true,
       "citations": [],
       "citation_valid": true,
       "used_fallback": false,
-      "latency_ms": 0.757,
+      "latency_ms": 3.357,
       "answer_correctness": 1.0,
       "judge_faithful": true,
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
     }
-  ],
-  "report_file": "C:\\Users\\aliak\\OneDrive\\Desktop\\Assignments\\SCD A3\\eval\\results\\eval_baseline_1795347665.json"
+  ]
 }

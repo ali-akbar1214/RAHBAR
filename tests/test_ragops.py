@@ -108,3 +108,33 @@ def test_verification_quarantines_batch_b_defects() -> None:
         )
         assert rep.quarantined_count == 7
         assert rep.passed_count == 3
+
+
+def test_release_gate_rejects_high_false_abstention_and_low_faithfulness() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        tp = Path(tmp)
+        base_file = tp / "baseline.json"
+        base_file.write_text(
+            '{"component_level":{"clean":{"recall_at_5":0.95}},'
+            '"end_to_end":{"abstention_correctness":1.0,"false_abstention_rate":0.2}}',
+            encoding="utf-8",
+        )
+        bad_cand = {
+            "collection_name": "cand-bad",
+            "embedding_version": "lexical-proj-v1",
+            "module_level": {"determinism_max_diff": 0.0},
+            "component_level": {"clean": {"recall_at_5": 0.95}},
+            "end_to_end": {
+                "abstention_correctness": 1.0,
+                "false_abstention_rate": 1.0,
+                "faithfulness": 0.2308,
+                "citation_validity": 1.0,
+                "latency_p95_ms": 200.0,
+                "used_fallback_count": 0,
+            },
+        }
+        passed, gate = check_release_gate(bad_cand, candidate_name="bad", baseline_path=base_file, output_dir=tp)
+        assert not passed
+        failed_rules = [c["rule"] for c in gate["checks"] if not c["passed"]]
+        assert "min_faithfulness" in failed_rules
+        assert "max_false_abstention_rate" in failed_rules

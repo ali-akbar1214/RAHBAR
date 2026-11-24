@@ -56,11 +56,16 @@ def check_release_gate(
     c_abs = float(candidate_res["end_to_end"]["abstention_correctness"])
     abstention_drop = round(b_abs - c_abs, 4)
 
+    b_false_abs = float(baseline["end_to_end"]["false_abstention_rate"])
+    c_false_abs = float(candidate_res["end_to_end"]["false_abstention_rate"])
+
     c_faith = float(candidate_res["end_to_end"]["faithfulness"])
     c_cit = float(candidate_res["end_to_end"]["citation_validity"])
     c_p95 = float(candidate_res["end_to_end"]["latency_p95_ms"])
     c_det = float(candidate_res["module_level"]["determinism_max_diff"])
     c_fb = int(candidate_res["end_to_end"]["used_fallback_count"])
+
+    max_fa_thresh = float(cfg.get("max_false_abstention_rate", 0.25))
 
     checks = [
         {
@@ -84,6 +89,14 @@ def check_release_gate(
             "baseline": b_abs,
             "candidate": c_abs,
             "passed": abstention_drop <= float(cfg["max_abstention_drop"]),
+        },
+        {
+            "rule": "max_false_abstention_rate",
+            "threshold": f"<= {max_fa_thresh}",
+            "measured": c_false_abs,
+            "baseline": b_false_abs,
+            "candidate": c_false_abs,
+            "passed": c_false_abs <= max_fa_thresh,
         },
         {
             "rule": "min_faithfulness",
@@ -154,6 +167,7 @@ def evaluate_candidate(
     chunk_size: int,
     chunk_overlap: int,
     embedding_version: str,
+    require_llm: bool = False,
 ) -> tuple[bool, dict[str, Any]]:
     """Build candidate index in an isolated TemporaryDirectory and evaluate against gate."""
     with tempfile.TemporaryDirectory(prefix=f"ragops_cand_{candidate_name}_") as tmp:
@@ -179,6 +193,7 @@ def evaluate_candidate(
             collection_name=col_name,
             embedding_version=embedding_version,
             label=candidate_name,
+            require_llm=require_llm,
         )
         print_summary(res)
         return check_release_gate(res, candidate_name=candidate_name)
@@ -188,34 +203,47 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Part C: Candidate Experiment & Release Gate")
     parser.add_argument(
         "--candidate",
-        choices=["pass", "fail", "both"],
-        default="both",
-        help="pass = fast-policies-v2 (500/100 + lexical-proj-v2); fail = bad chunk-40/5",
+        choices=["chunk", "embed", "fail", "all"],
+        default="all",
+        help="chunk = candidateA-chunk (500/100, v1); embed = candidateA-embed (320/80, v2); fail = candidateB-bad (40/5, v1)",
     )
+    parser.add_argument("--require-llm", action="store_true", help="Fail if Groq LLM fallback triggers")
     args = parser.parse_args()
 
-    overall_ok = True
-    if args.candidate in {"pass", "both"}:
+    candidates_run: list[tuple[str, bool]] = []
+    if args.candidate in {"chunk", "all"}:
         ok, _ = evaluate_candidate(
-            candidate_name="candidateA-v2",
+            candidate_name="candidateA-chunk",
             chunk_size=500,
             chunk_overlap=100,
-            embedding_version="lexical-proj-v2",
+            embedding_version="lexical-proj-v1",
+            require_llm=args.require_llm,
         )
-        if not ok:
-            overall_ok = False
+        candidates_run.append(("candidateA-chunk", ok))
 
-    if args.candidate in {"fail", "both"}:
+    if args.candidate in {"embed", "all"}:
+        ok, _ = evaluate_candidate(
+            candidate_name="candidateA-embed",
+            chunk_size=320,
+            chunk_overlap=80,
+            embedding_version="lexical-proj-v2",
+            require_llm=args.require_llm,
+        )
+        candidates_run.append(("candidateA-embed", ok))
+
+    if args.candidate in {"fail", "all"}:
         ok, _ = evaluate_candidate(
             candidate_name="candidateB-bad",
             chunk_size=40,
             chunk_overlap=5,
             embedding_version="lexical-proj-v1",
+            require_llm=args.require_llm,
         )
-        if args.candidate == "fail" and not ok:
-            sys.exit(1)
+        candidates_run.append(("candidateB-bad", ok))
 
-    if args.candidate == "pass" and not overall_ok:
+    if args.candidate == "fail" and not candidates_run[-1][1]:
+        sys.exit(1)
+    if args.candidate in {"chunk", "embed"} and not candidates_run[-1][1]:
         sys.exit(1)
 
 

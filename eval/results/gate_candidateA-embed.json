@@ -1,0 +1,70 @@
+{
+  "candidate": "candidateA-embed",
+  "timestamp": "2026-11-24T17:11:00.294672+00:00",
+  "collection_name": "cand-candidateA-embed",
+  "embedding_version": "lexical-proj-v2",
+  "verdict": "APPROVED / PASS",
+  "exit_code": 0,
+  "checks": [
+    {
+      "rule": "max_recall_at_5_drop",
+      "threshold": "<= 0.02",
+      "measured": -0.05,
+      "baseline": 0.95,
+      "candidate": 1.0,
+      "passed": true
+    },
+    {
+      "rule": "min_recall_at_5",
+      "threshold": ">= 0.9",
+      "measured": 1.0,
+      "passed": true
+    },
+    {
+      "rule": "max_abstention_drop",
+      "threshold": "<= 0.0",
+      "measured": 0.0,
+      "baseline": 1.0,
+      "candidate": 1.0,
+      "passed": true
+    },
+    {
+      "rule": "max_false_abstention_rate",
+      "threshold": "<= 0.25",
+      "measured": 0.15,
+      "baseline": 0.2,
+      "candidate": 0.15,
+      "passed": true
+    },
+    {
+      "rule": "min_faithfulness",
+      "threshold": ">= 0.8",
+      "measured": 0.8846,
+      "passed": true
+    },
+    {
+      "rule": "min_citation_validity",
+      "threshold": ">= 0.95",
+      "measured": 1.0,
+      "passed": true
+    },
+    {
+      "rule": "max_latency_p95_ms",
+      "threshold": "<= 7000.0",
+      "measured": 4123.88,
+      "passed": true
+    },
+    {
+      "rule": "max_determinism_diff",
+      "threshold": "<= 0.0001",
+      "measured": 0.0,
+      "passed": true
+    },
+    {
+      "rule": "max_fallback_count",
+      "threshold": "<= 0",
+      "measured": 0,
+      "passed": true
+    }
+  ]
+}

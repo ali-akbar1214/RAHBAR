@@ -1,8 +1,8 @@
 {
-  "candidate": "candidateA-v2",
-  "timestamp": "2026-11-23T20:17:44.789115+00:00",
-  "collection_name": "cand-candidateA-v2",
-  "embedding_version": "lexical-proj-v2",
+  "candidate": "candidateA-chunk",
+  "timestamp": "2026-11-24T17:08:43.462616+00:00",
+  "collection_name": "cand-candidateA-chunk",
+  "embedding_version": "lexical-proj-v1",
   "verdict": "APPROVED / PASS",
   "exit_code": 0,
   "checks": [
@@ -29,6 +29,14 @@
       "passed": true
     },
     {
+      "rule": "max_false_abstention_rate",
+      "threshold": "<= 0.25",
+      "measured": 0.1,
+      "baseline": 0.2,
+      "candidate": 0.1,
+      "passed": true
+    },
+    {
       "rule": "min_faithfulness",
       "threshold": ">= 0.8",
       "measured": 0.9231,
@@ -43,7 +51,7 @@
     {
       "rule": "max_latency_p95_ms",
       "threshold": "<= 7000.0",
-      "measured": 6077.53,
+      "measured": 4944.07,
       "passed": true
     },
     {

@@ -18,11 +18,11 @@
       "max": 0.8861
     }
   },
-  "covered_count": 35,
-  "uncovered_count": 5,
-  "coverage_share": 0.875,
+  "covered_count": 36,
+  "uncovered_count": 4,
+  "coverage_share": 0.9,
   "target_threshold": 0.85,
-  "similarity_threshold": 0.18,
+  "similarity_threshold": 0.1618,
   "gap_detected": false,
   "uncovered_queries": [
     {
@@ -56,14 +56,6 @@
       "best_score": 0.1428,
       "nearest_golden_id": "q09",
       "nearest_golden_q": "How many consecutive semesters on academic warning or probation result in academic dismissal?"
-    },
-    {
-      "id": "uq22",
-      "domain": "in_domain",
-      "query": "Where are the different campuses of FAST located in Pakistan?",
-      "best_score": 0.1625,
-      "nearest_golden_id": "q26",
-      "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
     }
   ],
   "clusters": [
@@ -75,7 +67,7 @@
         "finish",
         "software"
       ],
-      "cluster_label": "years, have, finish, software",
+      "cluster_label": "Study duration & dismissal",
       "size": 1,
       "queries": [
         {
@@ -96,7 +88,7 @@
         "cheating",
         "programming"
       ],
-      "cluster_label": "penalty, caught, cheating, programming",
+      "cluster_label": "Academic integrity",
       "size": 1,
       "queries": [
         {
@@ -116,7 +108,7 @@
         "cgpa",
         "above"
       ],
-      "cluster_label": "courses, cgpa, above",
+      "cluster_label": "Course overload & CGPA",
       "size": 1,
       "queries": [
         {
@@ -137,7 +129,7 @@
         "getting",
         "dropped"
       ],
-      "cluster_label": "warnings, before, getting, dropped",
+      "cluster_label": "Study duration & dismissal",
       "size": 1,
       "queries": [
         {
@@ -149,33 +141,12 @@
           "nearest_golden_q": "How many consecutive semesters on academic warning or probation result in academic dismissal?"
         }
       ]
-    },
-    {
-      "cluster_id": 5,
-      "label_terms": [
-        "different",
-        "campuses",
-        "fast",
-        "located"
-      ],
-      "cluster_label": "different, campuses, fast, located",
-      "size": 1,
-      "queries": [
-        {
-          "id": "uq22",
-          "domain": "in_domain",
-          "query": "Where are the different campuses of FAST located in Pakistan?",
-          "best_score": 0.1625,
-          "nearest_golden_id": "q26",
-          "nearest_golden_q": "What are the five campuses of FAST-NUCES and what is the maximum overload credit hour limit for a student with 3.20 CGPA?"
-        }
-      ]
     }
   ],
   "label": "after",
   "golden_path": "eval/golden_v2.jsonl",
   "golden_count": 32,
   "embedding_version": "lexical-proj-v2",
-  "threshold_rationale": "Derived from Part B module data (lexical-proj-v2): mean_paraphrase=0.0974, mean_unrelated=0.0368 -> threshold=0.1800",
-  "timestamp": "2026-11-23T20:15:25.667608+00:00"
+  "threshold_rationale": "Derived from Part B lexical-proj-v2 module data: mean_paraphrase=0.1618, mean_unrelated=0.0033, midpoint=0.0826, p10=0.0046 -> threshold=0.1618",
+  "timestamp": "2026-11-24T17:04:31.804312+00:00"
 }

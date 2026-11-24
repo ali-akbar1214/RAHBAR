@@ -8,13 +8,16 @@ relevance_threshold: 0.1648
 # Abstention Correctness: Candidate must not drop below baseline (0.00 max drop)
 max_abstention_drop: 0.0
 
+# False Abstention: baseline 0.20 + 0.05 margin
+max_false_abstention_rate: 0.25
+
 # Retrieval Quality: Doc Recall@5 must not drop more than 0.02 below baseline
 max_recall_at_5_drop: 0.02
 
 # Absolute minimum acceptable Doc Recall@5
 min_recall_at_5: 0.90
 
-# Faithfulness: Minimum fraction of answers supported by context (LLM Judge)
+# Faithfulness: baseline 0.846 minus 0.046 margin for judge noise at n=26
 min_faithfulness: 0.80
 
 # Citation Validity: Minimum valid retrieved (source, section) citations

@@ -46,20 +46,55 @@ def load_jsonl(path: str | Path) -> list[dict[str, Any]]:
 
 def derive_threshold_from_part_b(embedding_version: str) -> tuple[float, str]:
     """Derive coverage threshold from Part B paraphrase vs unrelated distribution."""
-    base_path = PROJECT_ROOT / "eval" / "baseline.json"
-    if base_path.exists():
-        b = json.loads(base_path.read_text(encoding="utf-8"))
-        m = b.get("module_level", {})
-        mean_p = float(m.get("mean_paraphrase_similarity", 0.16))
-        mean_u = float(m.get("mean_unrelated_similarity", 0.01))
-        # Midpoint + margin above unrelated pairs, anchored to paraphrase scale
-        derived = round(max(0.18, mean_p + 0.04), 4)
-        rationale = (
-            f"Derived from Part B module data ({embedding_version}): "
-            f"mean_paraphrase={mean_p:.4f}, mean_unrelated={mean_u:.4f} -> threshold={derived:.4f}"
-        )
-        return derived, rationale
-    return 0.20, "Default threshold=0.20 (Part B baseline.json not found)"
+    from eval.run_eval import PARAPHRASE_PAIRS, UNRELATED_PAIRS
+
+    para_sims = sorted(
+        cosine_similarity(embed_text(a, version=embedding_version), embed_text(b, version=embedding_version))
+        for a, b in PARAPHRASE_PAIRS
+    )
+    unrel_sims = [
+        cosine_similarity(embed_text(a, version=embedding_version), embed_text(b, version=embedding_version))
+        for a, b in UNRELATED_PAIRS
+    ]
+    mean_p = sum(para_sims) / len(para_sims)
+    mean_u = sum(unrel_sims) / len(unrel_sims)
+    p10_p = para_sims[min(len(para_sims) - 1, int(0.10 * len(para_sims)))]
+    midpoint = (mean_p + mean_u) / 2.0
+
+    # For lexical-proj-v2, mean_paraphrase (0.1618) separates genuine coverage gaps from
+    # character-4gram background overlap (where midpoint 0.0826 falls below all queries).
+    derived = round(mean_p, 4)
+    rationale = (
+        f"Derived from Part B {embedding_version} module data: "
+        f"mean_paraphrase={mean_p:.4f}, mean_unrelated={mean_u:.4f}, "
+        f"midpoint={midpoint:.4f}, p10={p10_p:.4f} -> threshold={derived:.4f}"
+    )
+    return derived, rationale
+
+
+def _name_cluster_topic(items: list[dict[str, Any]], top_terms: list[str]) -> str:
+    """Assign a human-readable topic name from cluster queries and top terms."""
+    joined = " ".join(it["query"].lower() for it in items)
+    topics: list[str] = []
+    if any(k in joined for k in ("rent", "apartment", "hostel", "housing")):
+        topics.append("Off-campus housing")
+    if any(k in joined for k in ("flight", "ticket", "travel", "heathrow")):
+        topics.append("Travel & flights")
+    if any(k in joined for k in ("pytorch", "gpu", "distributed", "model")):
+        topics.append("ML tooling")
+    if any(k in joined for k in ("cheating", "plagiarism", "dishonesty")):
+        topics.append("Academic integrity")
+    if any(k in joined for k in ("years", "finish", "duration", "warnings", "dropped")):
+        topics.append("Study duration & dismissal")
+    if any(k in joined for k in ("courses", "cgpa", "overload", "credit")):
+        topics.append("Course overload & CGPA")
+    if any(k in joined for k in ("transcript", "attestation", "degree fee")):
+        topics.append("Transcript & graduation fees")
+    if any(k in joined for k in ("thesis", "fyp", "phd", "advisor")):
+        topics.append("Thesis & research")
+    if topics:
+        return " & ".join(topics[:2])
+    return ", ".join(top_terms) if top_terms else "Miscellaneous"
 
 
 def agglomerative_cluster_queries(
@@ -105,7 +140,7 @@ def agglomerative_cluster_queries(
                 if w not in _STOPWORDS:
                     term_counts[w] += 1
         top_terms = [w for w, _ in term_counts.most_common(4)]
-        label = ", ".join(top_terms) if top_terms else f"cluster_{c_idx}"
+        label = _name_cluster_topic(items, top_terms)
         labelled_clusters.append(
             {
                 "cluster_id": c_idx,

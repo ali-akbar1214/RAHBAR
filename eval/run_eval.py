@@ -186,11 +186,17 @@ def compute_retrieval_metrics(
     vector_store: VectorStore,
     embedding_version: str,
     noisy_mode: bool = False,
+    add_distractors: bool = False,
+    add_typos: bool = False,
     seed: int = 42,
 ) -> dict[str, float]:
     """Compute deduped doc-level, page-level, and chunk-level metrics (B-6, B-7)."""
-    eval_store = vector_store
     if noisy_mode:
+        add_distractors = True
+        add_typos = True
+
+    eval_store = vector_store
+    if add_distractors:
         # Build a temporary store copy with +3 irrelevant distractor docs (B-7)
         tmp_store = VectorStore.__new__(VectorStore)
         tmp_store.storage_path = vector_store.storage_path
@@ -226,7 +232,7 @@ def compute_retrieval_metrics(
     chunk_ndcgs: list[float] = []
 
     for q in answerable_qs:
-        q_text = _corrupt_query_words(q["question"], rng, rate=0.15) if noisy_mode else q["question"]
+        q_text = _corrupt_query_words(q["question"], rng, rate=0.15) if add_typos else q["question"]
         gt_doc = q["ground_truth_doc"]
         gt_page = q.get("ground_truth_page")
         gt_chunks = set(q.get("ground_truth_chunks") or [])
@@ -397,6 +403,62 @@ def _cohens_kappa(y1: list[bool], y2: list[bool]) -> float:
     return (po - pe) / (1.0 - pe)
 
 
+def compute_human_agreement(
+    per_question_records: list[dict[str, Any]],
+    human_labels_path: Path | None,
+) -> dict[str, Any]:
+    """Compare human faithfulness ratings against LLM judge verdicts for a candidate."""
+    agreement_rate = None
+    kappa = None
+    human_count = 0
+    disagreements: list[dict[str, Any]] = []
+    if human_labels_path and human_labels_path.exists():
+        h_map = {}
+        for line in human_labels_path.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                obj = json.loads(line)
+                h_map[obj["question_id"]] = obj
+        y_human: list[bool] = []
+        y_judge: list[bool] = []
+        for rec in per_question_records:
+            qid = rec["question_id"]
+            if qid in h_map:
+                h_val = bool(h_map[qid]["human_faithful"])
+                j_val = bool(rec["judge_faithful"])
+                y_human.append(h_val)
+                y_judge.append(j_val)
+                if h_val != j_val:
+                    disagreements.append(
+                        {
+                            "question_id": qid,
+                            "human_faithful": h_val,
+                            "judge_faithful": j_val,
+                            "human_note": h_map[qid].get("note", ""),
+                            "judge_reason": rec["judge_reason"],
+                        }
+                    )
+        human_count = len(y_human)
+        if human_count > 0:
+            agreement_rate = round(sum(1 for a, b in zip(y_human, y_judge) if a == b) / human_count, 4)
+            kappa = round(_cohens_kappa(y_human, y_judge), 4)
+    return {
+        "human_judge_agreement_rate": agreement_rate,
+        "human_judge_cohens_kappa": kappa,
+        "human_validated_count": human_count,
+        "human_judge_disagreements": disagreements,
+    }
+
+
+def attach_human_labels(eval_json_path: Path, labels_path: Path) -> dict[str, Any]:
+    """Attach per-candidate human agreement metrics onto an existing eval JSON report."""
+    data = json.loads(eval_json_path.read_text(encoding="utf-8"))
+    hg = compute_human_agreement(data.get("per_question", []), labels_path)
+    data["end_to_end"].update(hg)
+    data["end_to_end"]["human_labels_file"] = str(labels_path.name)
+    eval_json_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    return hg
+
+
 def evaluate_end_to_end(
     golden_questions: list[dict[str, Any]],
     vector_store_path: Path,
@@ -406,6 +468,8 @@ def evaluate_end_to_end(
     traces_path: Path,
     latency_runs: int = 1,
     require_llm: bool = False,
+    label: str = "baseline",
+    human_labels_path: Path | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Run real end-to-end evaluation via QAEngine.answer_query() (B-8)."""
     engine = QAEngine(
@@ -535,41 +599,13 @@ def evaluate_end_to_end(
     if require_llm and fallback_count > 0:
         raise RuntimeError(f"LLM fallback triggered {fallback_count} times while --require-llm is set.")
 
-    # Human-vs-Judge Agreement from eval/human_labels.jsonl
-    human_labels_path = PROJECT_ROOT / "eval" / "human_labels.jsonl"
-    agreement_rate = None
-    kappa = None
-    human_count = 0
-    disagreements: list[dict[str, Any]] = []
-    if human_labels_path.exists():
-        h_map = {}
-        for line in human_labels_path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
-                obj = json.loads(line)
-                h_map[obj["question_id"]] = obj
-        y_human: list[bool] = []
-        y_judge: list[bool] = []
-        for rec in per_question_records:
-            qid = rec["question_id"]
-            if qid in h_map:
-                h_val = bool(h_map[qid]["human_faithful"])
-                j_val = bool(rec["judge_faithful"])
-                y_human.append(h_val)
-                y_judge.append(j_val)
-                if h_val != j_val:
-                    disagreements.append(
-                        {
-                            "question_id": qid,
-                            "human_faithful": h_val,
-                            "judge_faithful": j_val,
-                            "human_note": h_map[qid].get("note", ""),
-                            "judge_reason": rec["judge_reason"],
-                        }
-                    )
-        human_count = len(y_human)
-        if human_count > 0:
-            agreement_rate = round(sum(1 for a, b in zip(y_human, y_judge) if a == b) / human_count, 4)
-            kappa = round(_cohens_kappa(y_human, y_judge), 4)
+    # Human-vs-Judge Agreement from per-candidate eval/human_labels_<label>.jsonl
+    h_path = human_labels_path if human_labels_path is not None else (PROJECT_ROOT / "eval" / f"human_labels_{label}.jsonl")
+    hg = compute_human_agreement(per_question_records, h_path)
+    agreement_rate = hg["human_judge_agreement_rate"]
+    kappa = hg["human_judge_cohens_kappa"]
+    human_count = hg["human_validated_count"]
+    disagreements = hg["human_judge_disagreements"]
 
     all_latencies_ms.sort()
     test_recs = [r for r in per_question_records if r["split"] == "test"]
@@ -630,9 +666,17 @@ def run_evaluation_suite(
     # 1. Module level
     module_res = evaluate_module_level(vector_store, emb_ver)
 
-    # 2. Component level (Clean + Dual Noise Test)
-    comp_clean = compute_retrieval_metrics(questions, vector_store, emb_ver, noisy_mode=False, seed=seed)
-    comp_noisy = compute_retrieval_metrics(questions, vector_store, emb_ver, noisy_mode=True, seed=seed)
+    # 2. Component level (Clean + Separate Dual Noise Tests)
+    comp_clean = compute_retrieval_metrics(questions, vector_store, emb_ver, seed=seed)
+    comp_noisy_docs = compute_retrieval_metrics(
+        questions, vector_store, emb_ver, add_distractors=True, add_typos=False, seed=seed
+    )
+    comp_noisy_typos = compute_retrieval_metrics(
+        questions, vector_store, emb_ver, add_distractors=False, add_typos=True, seed=seed
+    )
+    comp_noisy = compute_retrieval_metrics(
+        questions, vector_store, emb_ver, add_distractors=True, add_typos=True, seed=seed
+    )
 
     # 3. Tune abstention threshold on `dev` split only (B-4)
     tuned_thresh, dev_tune_info = tune_threshold_on_dev(questions, vector_store, emb_ver)
@@ -650,6 +694,7 @@ def run_evaluation_suite(
         traces_path=traces_file,
         latency_runs=latency_runs,
         require_llm=require_llm,
+        label=label,
     )
 
     ts_int = int(time.time())
@@ -667,7 +712,11 @@ def run_evaluation_suite(
         "module_level": module_res,
         "component_level": {
             "clean": comp_clean,
+            "noisy_docs": comp_noisy_docs,
+            "noisy_typos": comp_noisy_typos,
             "noisy": comp_noisy,
+            "noise_docs_recall_delta": round(comp_noisy_docs["recall_at_5"] - comp_clean["recall_at_5"], 4),
+            "noise_typos_recall_delta": round(comp_noisy_typos["recall_at_5"] - comp_clean["recall_at_5"], 4),
             "noise_recall_delta": round(comp_noisy["recall_at_5"] - comp_clean["recall_at_5"], 4),
         },
         "end_to_end": e2e_res,
@@ -695,7 +744,9 @@ def run_evaluation_suite(
         f"| Component | Doc Recall@3 / Recall@5 | {comp_clean['recall_at_3']:.4f} / {comp_clean['recall_at_5']:.4f} |",
         f"| Component | Page Recall@3 / Recall@5 | {comp_clean['page_recall_at_3']:.4f} / {comp_clean['page_recall_at_5']:.4f} |",
         f"| Component | MRR / nDCG@5 / Chunk nDCG@5 | {comp_clean['mrr']:.4f} / {comp_clean['ndcg_at_5']:.4f} / {comp_clean['chunk_ndcg_at_5']:.4f} |",
-        f"| Component | Noisy Recall@5 (Delta) | {comp_noisy['recall_at_5']:.4f} ({results['component_level']['noise_recall_delta']:+.4f}) |",
+        f"| Component | Noise (+3 Docs) Recall@5 | {comp_noisy_docs['recall_at_5']:.4f} ({results['component_level']['noise_docs_recall_delta']:+.4f}) |",
+        f"| Component | Noise (15% Typos) Recall@5 | {comp_noisy_typos['recall_at_5']:.4f} ({results['component_level']['noise_typos_recall_delta']:+.4f}) |",
+        f"| Component | Combined Noise Recall@5 | {comp_noisy['recall_at_5']:.4f} ({results['component_level']['noise_recall_delta']:+.4f}) |",
         f"| End-to-End | Faithfulness (All / Test) | {e2e_res['faithfulness']:.4f} / {e2e_res['test_split_faithfulness']:.4f} |",
         f"| End-to-End | Answer Correctness (Keywords) | {e2e_res['answer_correctness']:.4f} |",
         f"| End-to-End | Abstention / False Abstain | {e2e_res['abstention_correctness']:.4f} / {e2e_res['false_abstention_rate']:.4f} |",
@@ -731,9 +782,11 @@ def print_summary(res: dict[str, Any]) -> None:
     print(f"  - Cross-Process Determinism Diff: {m['determinism_max_diff']:.8f}")
 
     cc = res["component_level"]["clean"]
+    cd = res["component_level"].get("noisy_docs", cc)
+    ct = res["component_level"].get("noisy_typos", cc)
     cn = res["component_level"]["noisy"]
     print("\n[LEVEL 2: COMPONENT LEVEL (RETRIEVAL)]")
-    print(f"  {'Metric':<18} {'Clean':>10} {'Noisy(+3docs/15%typo)':>22} {'Delta':>10}")
+    print(f"  {'Metric':<18} {'Clean':>9} {'+3 Docs':>9} {'15% Typos':>11} {'Combined':>10}")
     print("  " + "-" * 64)
     for k, lbl in [
         ("recall_at_3", "Doc Recall@3"),
@@ -745,7 +798,7 @@ def print_summary(res: dict[str, Any]) -> None:
         ("ndcg_at_5", "Doc nDCG@5"),
         ("chunk_ndcg_at_5", "Chunk nDCG@5"),
     ]:
-        print(f"  {lbl:<18} {cc[k]:>10.4f} {cn[k]:>22.4f} {cn[k]-cc[k]:>+10.4f}")
+        print(f"  {lbl:<18} {cc[k]:>9.4f} {cd[k]:>9.4f} {ct[k]:>11.4f} {cn[k]:>10.4f}")
 
     e = res["end_to_end"]
     print("\n[LEVEL 3: END-TO-END LEVEL (REAL QAEngine + GROQ LLM)]")
@@ -776,7 +829,18 @@ def main() -> None:
     parser.add_argument("--stochasticity", action="store_true")
     parser.add_argument("--gate", action="store_true", help="Evaluate against release gate and exit non-zero on fail")
     parser.add_argument("--save-baseline", action="store_true", help="Persist results to eval/baseline.json")
+    parser.add_argument(
+        "--score-human-labels",
+        nargs=2,
+        metavar=("EVAL_JSON", "LABELS_JSONL"),
+        help="Attach per-candidate human agreement metrics onto an existing eval JSON without re-running LLM",
+    )
     args = parser.parse_args()
+
+    if args.score_human_labels:
+        hg = attach_human_labels(Path(args.score_human_labels[0]), Path(args.score_human_labels[1]))
+        print(json.dumps(hg, indent=2))
+        return
 
     res = run_evaluation_suite(
         golden_path=args.golden,
