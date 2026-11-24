@@ -35,16 +35,20 @@ spec:
                 name: ragops-secret
           env:
             - name: COLLECTION_NAME
-              value: "fast-policies-v2"
+              value: "fast-policies-chunk"
             - name: EMBEDDING_VERSION
-              value: "lexical-proj-v2"
+              value: "lexical-proj-v1"
+            - name: CHUNK_SIZE
+              value: "500"
+            - name: CHUNK_OVERLAP
+              value: "100"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "140m"
+              memory: "80Mi"
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "250m"
+              memory: "128Mi"
           startupProbe:
             httpGet:
               path: /healthz

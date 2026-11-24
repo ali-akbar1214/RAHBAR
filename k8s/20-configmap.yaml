@@ -22,6 +22,7 @@ metadata:
 data:
   relevance_threshold: "0.1648"
   max_abstention_drop: "0.0"
+  max_false_abstention_rate: "0.25"
   max_recall_at_5_drop: "0.02"
   min_recall_at_5: "0.90"
   min_faithfulness: "0.80"

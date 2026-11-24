@@ -22,8 +22,8 @@
 - **Part B (Offline 3-Level Testing)**: Module, Component (doc/page/chunk Recall@k, MRR, nDCG@5, dual noise test), and real End-to-End evaluation via `QAEngine.answer_query()` + Groq `qwen/qwen3.8-27b` LLM & LLM Judge + `eval/human_labels.jsonl`.
 - **Part C (Change Experiment & Release Gate)**: Automated gate comparing isolated candidate collections against `eval/baseline.json` and `eval/gate_config.yaml`.
 - **Part D (Observability & Traceability)**: Bare JSONL query traces (`event: "trace"`), unified input + retrieval injection guardrails (`src/pipeline/guardrails.py`), semantic cache, CLI trace inspector, and time-windowed telemetry.
-- **Part E (Drift & Coverage)**: Part-B-derived coverage threshold (`0.18`), pure-NumPy agglomerative clustering over all uncovered live queries (`77.5% -> 87.5%`), Batch B data drift evaluation, and versioned `eval/golden_v2.jsonl`.
-- **Part F (Kubernetes Deployment)**: Numbered Minikube manifests with `ragops-data-pvc` sole-writer enforcement (`readOnly: true` on API/Eval), ConfigMap gate overrides, rolling updates, and `kubectl rollout undo`.
+- **Part E (Drift & Coverage)**: Part-B-derived coverage threshold (`0.1618`), pure-NumPy agglomerative clustering over all uncovered live queries (`82.5% -> 90.0%`), Batch B data drift evaluation, and versioned `eval/golden_v2.jsonl`.
+- **Part F (Kubernetes Deployment)**: Numbered Minikube manifests with `ragops-data-pvc` sole-writer enforcement (`readOnly: true` on API/Eval), per-workload resource sizing, ConfigMap gate overrides, rolling updates, and `kubectl rollout undo`.
 
 ---
 
@@ -40,9 +40,9 @@ RAHBAR/
 │   ├── coverage_check.py     # Part E semantic coverage & agglomerative clustering
 │   └── user_queries.jsonl    # 40 live queries (28 in-domain, 12 out-of-domain)
 ├── eval/
-│   ├── golden.jsonl          # 26 curated questions (dev/test splits)
+│   ├── golden.jsonl          # 26 curated questions (13 human, 13 synthetic reviewed; dev/test splits)
 │   ├── golden_v2.jsonl       # 32 updated questions post-Batch B drift
-│   ├── human_labels.jsonl    # 10 human-inspected answers for judge agreement
+│   ├── human_labels_*.jsonl  # Per-candidate human-inspected answers for judge agreement
 │   ├── gate_config.yaml      # Single source of truth for gate & threshold rules
 │   ├── baseline.json         # Committed baseline benchmark reference
 │   ├── run_eval.py           # Part B/C 3-level evaluation & gate runner
@@ -53,7 +53,7 @@ RAHBAR/
 │   ├── api/main.py           # FastAPI service (/healthz, /readyz, /metrics, /api/ask)
 │   └── pipeline/             # config, embed, guardrails, verification, indexer, tracer, qa_engine
 ├── tests/                    # Automated unit & regression tests (pytest)
-├── traces/                   # Trace inspection CLI & committed trace sample
+├── traces/                   # Trace inspection CLI & committed API + eval trace logs (280 total)
 ├── Dockerfile
 ├── pytest.ini
 └── requirements.txt
@@ -89,15 +89,16 @@ python eval/run_eval.py --stochasticity
 
 ### Part C: Change Experiment & Automated Release Gate
 ```bash
-python scripts/release_gate.py --candidate both
-python scripts/release_gate.py --candidate pass
-python scripts/release_gate.py --candidate fail
+python scripts/release_gate.py --candidate all --require-llm
+python scripts/release_gate.py --candidate chunk --require-llm
+python scripts/release_gate.py --candidate embed --require-llm
+python scripts/release_gate.py --candidate fail --require-llm
 ```
 
 ### Part D: Observability, Guardrails, Trace Lookup & Time-Windowed Metrics
 ```bash
 python scripts/test_part_d.py
-python -m traces.trace_tool --trace-id 603cd966-0cf9-49d0-8b6f-da66fb578ae0
+python -m traces.trace_tool --trace-id 29bfcd88-f00d-4116-851c-e9c8eb46f506
 python scripts/trace_metrics.py --last 72h
 ```
 
@@ -124,7 +125,7 @@ kubectl wait --for=condition=complete job/ragops-indexer-job -n ragops --timeout
 kubectl apply -f k8s/40-api-deployment.yaml
 kubectl apply -f k8s/60-helper-pod.yaml
 kubectl apply -f k8s/35-indexer-candidate-job.yaml
-kubectl wait --for=condition=complete job/ragops-indexer-candidate-v2 -n ragops --timeout=120s
+kubectl wait --for=condition=complete job/ragops-indexer-candidate-chunk -n ragops --timeout=120s
 
 kubectl apply -f k8s/50-eval-job.yaml
 kubectl logs -f job/ragops-eval-job -n ragops

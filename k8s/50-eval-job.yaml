@@ -21,11 +21,11 @@ spec:
             - eval/run_eval.py
             - --gate
             - --label
-            - k8s-candidate-v2
+            - k8s-candidate-chunk
             - --collection
-            - fast-policies-v2
+            - fast-policies-chunk
             - --embedding-version
-            - lexical-proj-v2
+            - lexical-proj-v1
             - --require-llm
           envFrom:
             - configMapRef:
@@ -39,11 +39,11 @@ spec:
               value: "/tmp/eval_traces"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "620m"
+              memory: "68Mi"
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "1100m"
+              memory: "112Mi"
           volumeMounts:
             # Read-only data mount: eval Job cannot mutate the lake or index
             - name: data-vol

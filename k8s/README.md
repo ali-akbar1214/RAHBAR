@@ -40,9 +40,9 @@ kubectl rollout status deployment/ragops-api -n ragops
 
 ### Step 5: Build Candidate Collections & Run Gated Evaluation Jobs
 ```bash
-# Passing candidate (fast-policies-v2)
+# Passing single-change candidate (fast-policies-chunk, chunk 500/100, lexical-proj-v1)
 kubectl apply -f k8s/35-indexer-candidate-job.yaml
-kubectl wait --for=condition=complete job/ragops-indexer-candidate-v2 -n ragops --timeout=120s
+kubectl wait --for=condition=complete job/ragops-indexer-candidate-chunk -n ragops --timeout=120s
 kubectl apply -f k8s/50-eval-job.yaml
 kubectl wait --for=condition=complete job/ragops-eval-job -n ragops --timeout=240s
 kubectl logs job/ragops-eval-job -n ragops
@@ -65,8 +65,8 @@ kubectl patch configmap ragops-gate-config -n ragops --type merge -p '{"data":{"
 
 ### Step 7: Controlled Release & Rollback (`kubectl rollout undo`)
 ```bash
-# Promote fast-policies-v2 via pod-template env update (maxUnavailable: 0)
-kubectl set env deployment/ragops-api COLLECTION_NAME=fast-policies-v2 EMBEDDING_VERSION=lexical-proj-v2 -n ragops
+# Promote fast-policies-chunk (500/100, lexical-proj-v1) via pod-template env update (maxUnavailable: 0)
+kubectl set env deployment/ragops-api COLLECTION_NAME=fast-policies-chunk CHUNK_SIZE=500 CHUNK_OVERLAP=100 -n ragops
 kubectl rollout status deployment/ragops-api -n ragops
 
 # Rollback to fast-policies-v1

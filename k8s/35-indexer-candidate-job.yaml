@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: ragops-indexer-candidate-v2
+  name: ragops-indexer-candidate-chunk
   namespace: ragops
 spec:
   backoffLimit: 1
@@ -22,20 +22,20 @@ spec:
                 name: ragops-env-config
           env:
             - name: COLLECTION_NAME
-              value: "fast-policies-v2"
+              value: "fast-policies-chunk"
             - name: EMBEDDING_VERSION
-              value: "lexical-proj-v2"
+              value: "lexical-proj-v1"
             - name: CHUNK_SIZE
               value: "500"
             - name: CHUNK_OVERLAP
               value: "100"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "600m"
+              memory: "36Mi"
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "1000m"
+              memory: "64Mi"
           volumeMounts:
             - name: data-vol
               mountPath: /data

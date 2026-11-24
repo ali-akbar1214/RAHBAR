@@ -40,11 +40,11 @@ spec:
                 name: ragops-secret
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "140m"
+              memory: "80Mi"
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "250m"
+              memory: "128Mi"
           startupProbe:
             httpGet:
               path: /healthz

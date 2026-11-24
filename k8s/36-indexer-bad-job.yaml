@@ -31,11 +31,11 @@ spec:
               value: "5"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "600m"
+              memory: "36Mi"
             limits:
-              cpu: "500m"
-              memory: "256Mi"
+              cpu: "1000m"
+              memory: "64Mi"
           volumeMounts:
             - name: data-vol
               mountPath: /data
