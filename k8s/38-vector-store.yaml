@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ragops-vector
+  namespace: ragops
+  labels:
+    app: ragops-vector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ragops-vector
+  template:
+    metadata:
+      labels:
+        app: ragops-vector
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: vector-store
+          image: ragops:v1
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn", "src.vector_service.main:app", "--host", "0.0.0.0", "--port", "8001"]
+          ports:
+            - containerPort: 8001
+              name: http
+          envFrom:
+            - configMapRef:
+                name: ragops-env-config
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "60Mi"
+            limits:
+              cpu: "150m"
+              memory: "96Mi"
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8001
+            failureThreshold: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8001
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8001
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          volumeMounts:
+            - name: data-vol
+              mountPath: /data
+              readOnly: true
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: ragops-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ragops-vector
+  namespace: ragops
+spec:
+  selector:
+    app: ragops-vector
+  ports:
+    - protocol: TCP
+      port: 8001
+      targetPort: 8001
+  type: ClusterIP

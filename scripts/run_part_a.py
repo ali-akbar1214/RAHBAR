@@ -86,7 +86,13 @@ def main() -> None:
             f"  Scanned={rep_a.total_scanned}, Accepted={rep_a.passed_count}, "
             f"Quarantined={rep_a.quarantined_count}, Archived={rep_a.archived_count}"
         )
-        print(f"  Per-check summary: {rep_a.per_check_summary}")
+        pcs_a = rep_a.per_check_summary
+        print(
+            f"  Checks: Q({pcs_a['quality']['passed']}/{pcs_a['quality']['failed']}), "
+            f"C({pcs_a['completeness']['passed']}/{pcs_a['completeness']['failed']}), "
+            f"R({pcs_a['recency']['passed']}/{pcs_a['recency']['failed']}), "
+            f"U({pcs_a['uniqueness']['passed']}/{pcs_a['uniqueness']['failed']})"
+        )
 
         # --- Step A2-1: Initial Ingestion of Batch A ---
         indexer = IncrementalIndexer(
@@ -112,12 +118,19 @@ def main() -> None:
             f"  Scanned={rep_b.total_scanned}, Accepted={rep_b.passed_count}, "
             f"Quarantined={rep_b.quarantined_count}, Archived={rep_b.archived_count}"
         )
-        print(f"  Per-check summary: {rep_b.per_check_summary}")
+        pcs_b = rep_b.per_check_summary
+        print(
+            f"  Checks: Q({pcs_b['quality']['passed']}/{pcs_b['quality']['failed']}), "
+            f"C({pcs_b['completeness']['passed']}/{pcs_b['completeness']['failed']}), "
+            f"R({pcs_b['recency']['passed']}/{pcs_b['recency']['failed']}), "
+            f"U({pcs_b['uniqueness']['passed']}/{pcs_b['uniqueness']['failed']})"
+        )
         print("\n  Batch B Verification Verdicts & Max Similarity:")
         for r in rep_b.records:
             sim_info = f"max_sim={r.max_similarity:.4f} ({r.most_similar_doc})" if r.most_similar_doc else "-"
             reason = r.quarantine_reason or "All checks passed"
-            print(f"    - {r.filename:<32} | {r.action.upper():<11} | {sim_info:<40} | {reason}")
+            print(f"    - {r.filename:<30} | {r.action.upper():<11} | {sim_info}")
+            print(f"        -> {reason}")
 
         # --- Step A2-2: Ingest Batch B Passers into Lake & Archive Superseded (A-2) ---
         for rec in rep_b.records:

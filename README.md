@@ -51,9 +51,10 @@ RAHBAR/
 ├── scripts/                  # CLI entrypoints for Parts A, C, D, E & ingest Job
 ├── src/
 │   ├── api/main.py           # FastAPI service (/healthz, /readyz, /metrics, /api/ask)
+│   ├── vector_service/       # Dedicated vector-store microservice (:8001, /readyz, /query)
 │   └── pipeline/             # config, embed, guardrails, verification, indexer, tracer, qa_engine
 ├── tests/                    # Automated unit & regression tests (pytest)
-├── traces/                   # Trace inspection CLI & committed API + eval trace logs (280 total)
+├── traces/                   # Trace inspection CLI & committed API + eval trace logs (157 total, 0 fallbacks)
 ├── Dockerfile
 ├── pytest.ini
 └── requirements.txt
@@ -122,11 +123,14 @@ kubectl create secret generic ragops-secret --from-env-file=key.env -n ragops
 kubectl apply -f k8s/30-indexer-job.yaml
 kubectl wait --for=condition=complete job/ragops-indexer-job -n ragops --timeout=120s
 
+kubectl apply -f k8s/38-vector-store.yaml
 kubectl apply -f k8s/40-api-deployment.yaml
+kubectl apply -f k8s/45-api-candidate-deployment.yaml
 kubectl apply -f k8s/60-helper-pod.yaml
 kubectl apply -f k8s/35-indexer-candidate-job.yaml
 kubectl wait --for=condition=complete job/ragops-indexer-candidate-chunk -n ragops --timeout=120s
 
+# Evaluates live http://ragops-api-candidate:8000 via EVAL_API_URL (or deploy all manifests via kubectl apply -k k8s/)
 kubectl apply -f k8s/50-eval-job.yaml
 kubectl logs -f job/ragops-eval-job -n ragops
 ```

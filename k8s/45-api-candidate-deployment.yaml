@@ -42,6 +42,8 @@ spec:
               value: "500"
             - name: CHUNK_OVERLAP
               value: "100"
+            - name: RELEVANCE_THRESHOLD
+              value: "0.1426"
           resources:
             requests:
               cpu: "140m"
@@ -62,15 +64,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           volumeMounts:
-            - name: data-vol
-              mountPath: /data
-              readOnly: true
             - name: traces-vol
               mountPath: /traces
       volumes:
-        - name: data-vol
-          persistentVolumeClaim:
-            claimName: ragops-data-pvc
         - name: traces-vol
           persistentVolumeClaim:
             claimName: ragops-traces-pvc

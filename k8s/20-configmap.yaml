@@ -13,6 +13,7 @@ data:
   CHUNK_SIZE: "320"
   CHUNK_OVERLAP: "80"
   LLM_MODEL: "qwen/qwen3.8-27b"
+  VECTOR_STORE_URL: "http://ragops-vector:8001"
 ---
 apiVersion: v1
 kind: ConfigMap

@@ -2,7 +2,7 @@
 
 ## 1. Architecture & Sole-Writer Enforcement
 - **`ragops-data-pvc` (1Gi RWO)**: Holds `/data/lake/{incoming,raw,quarantine,archive}` and `/data/index/{COLLECTION_NAME}.json` + `.manifest.json`.
-- **Sole-Writer Enforcement**: `ragops-data-pvc` is mounted **read-write ONLY** in `ragops-indexer-job` and `ragops-indexer-cronjob` (`scripts/ingest_job.py`). Both `ragops-api` Deployments and `ragops-eval-job` mount it `readOnly: true`.
+- **Sole-Writer & Dedicated Vector-Store Architecture**: `ragops-data-pvc` is mounted **read-write ONLY** in `ragops-indexer-job` and `ragops-indexer-cronjob` (`scripts/ingest_job.py`). A dedicated **vector-store microservice** (`38-vector-store.yaml`: `Deployment/ragops-vector` + `Service/ragops-vector` on `:8001`) mounts `ragops-data-pvc` `readOnly: true` and serves `/readyz` + `/query`. Both `ragops-api` and `ragops-api-candidate` query it over `VECTOR_STORE_URL=http://ragops-vector:8001` without mounting the data PVC directly; `ragops-eval-job` mounts `ragops-data-pvc` `readOnly: true` only for ground-truth chunk lookup during LLM judging.
 - **`ragops-results-pvc` (500Mi RWO)**: Persists verification, ingestion, evaluation, and gate JSON reports.
 - **`ragops-traces-pvc` (500Mi RWO)**: Each API pod writes `traces-$HOSTNAME.jsonl` to avoid concurrent write contention.
 
@@ -31,11 +31,15 @@ kubectl wait --for=condition=complete job/ragops-indexer-job -n ragops --timeout
 kubectl logs job/ragops-indexer-job -n ragops
 ```
 
-### Step 4: Deploy Live API (`ragops-api`) & Helper Pod
+### Step 4: Deploy Vector-Store Service, Live APIs & Helper Pod
 ```bash
+kubectl apply -f k8s/38-vector-store.yaml
+kubectl rollout status deployment/ragops-vector -n ragops
 kubectl apply -f k8s/40-api-deployment.yaml
+kubectl apply -f k8s/45-api-candidate-deployment.yaml
 kubectl apply -f k8s/60-helper-pod.yaml
 kubectl rollout status deployment/ragops-api -n ragops
+kubectl rollout status deployment/ragops-api-candidate -n ragops
 ```
 
 ### Step 5: Build Candidate Collections & Run Gated Evaluation Jobs
@@ -43,6 +47,7 @@ kubectl rollout status deployment/ragops-api -n ragops
 # Passing single-change candidate (fast-policies-chunk, chunk 500/100, lexical-proj-v1)
 kubectl apply -f k8s/35-indexer-candidate-job.yaml
 kubectl wait --for=condition=complete job/ragops-indexer-candidate-chunk -n ragops --timeout=120s
+# Eval Job targets live http://ragops-api-candidate:8000 via EVAL_API_URL (no hard-coded CLI flags)
 kubectl apply -f k8s/50-eval-job.yaml
 kubectl wait --for=condition=complete job/ragops-eval-job -n ragops --timeout=240s
 kubectl logs job/ragops-eval-job -n ragops
@@ -63,13 +68,13 @@ kubectl apply -f k8s/50-eval-job.yaml
 kubectl patch configmap ragops-gate-config -n ragops --type merge -p '{"data":{"min_faithfulness":"0.80"}}'
 ```
 
-### Step 7: Controlled Release & Rollback (`kubectl rollout undo`)
+### Step 7: Bad-Release Deployment & Rollback (`kubectl rollout undo`)
 ```bash
-# Promote fast-policies-chunk (500/100, lexical-proj-v1) via pod-template env update (maxUnavailable: 0)
-kubectl set env deployment/ragops-api COLLECTION_NAME=fast-policies-chunk CHUNK_SIZE=500 CHUNK_OVERLAP=100 -n ragops
+# Deploy a bad configuration (fast-policies-bad 40/5 chunks -> fails/abstains on /api/ask)
+kubectl set env deployment/ragops-api COLLECTION_NAME=fast-policies-bad CHUNK_SIZE=40 CHUNK_OVERLAP=5 RELEVANCE_THRESHOLD=0.263 -n ragops
 kubectl rollout status deployment/ragops-api -n ragops
 
-# Rollback to fast-policies-v1
+# Rollback bad release to verified baseline fast-policies-v1
 kubectl rollout undo deployment/ragops-api -n ragops
 kubectl rollout status deployment/ragops-api -n ragops
 ```

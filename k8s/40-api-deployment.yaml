@@ -64,16 +64,9 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           volumeMounts:
-            # Enforces sole-writer architecture: API pods cannot mutate lake or index
-            - name: data-vol
-              mountPath: /data
-              readOnly: true
             - name: traces-vol
               mountPath: /traces
       volumes:
-        - name: data-vol
-          persistentVolumeClaim:
-            claimName: ragops-data-pvc
         - name: traces-vol
           persistentVolumeClaim:
             claimName: ragops-traces-pvc

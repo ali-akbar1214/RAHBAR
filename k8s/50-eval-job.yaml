@@ -16,17 +16,7 @@ spec:
         - name: evaluator
           image: ragops:v1
           imagePullPolicy: IfNotPresent
-          command:
-            - python
-            - eval/run_eval.py
-            - --gate
-            - --label
-            - k8s-candidate-chunk
-            - --collection
-            - fast-policies-chunk
-            - --embedding-version
-            - lexical-proj-v1
-            - --require-llm
+          command: ["python", "eval/run_eval.py", "--gate", "--require-llm"]
           envFrom:
             - configMapRef:
                 name: ragops-env-config
@@ -35,6 +25,14 @@ spec:
             - secretRef:
                 name: ragops-secret
           env:
+            - name: CANDIDATE_LABEL
+              value: "k8s-candidate-chunk"
+            - name: COLLECTION_NAME
+              value: "fast-policies-chunk"
+            - name: EMBEDDING_VERSION
+              value: "lexical-proj-v1"
+            - name: EVAL_API_URL
+              value: "http://ragops-api-candidate:8000"
             - name: TRACES_DIR
               value: "/tmp/eval_traces"
           resources:

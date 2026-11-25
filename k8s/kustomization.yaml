@@ -6,6 +6,11 @@ resources:
   - 10-pvc.yaml
   - 20-configmap.yaml
   - 30-indexer-job.yaml
+  - 35-indexer-candidate-job.yaml
+  - 36-indexer-bad-job.yaml
+  - 38-vector-store.yaml
   - 40-api-deployment.yaml
+  - 45-api-candidate-deployment.yaml
   - 50-eval-job.yaml
+  - 55-eval-bad-job.yaml
   - 60-helper-pod.yaml

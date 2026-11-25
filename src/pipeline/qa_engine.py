@@ -25,6 +25,8 @@ from datetime import timezone
 from pathlib import Path
 from typing import Any
 
+import httpx
+
 from .config import (
     get_collection_name,
     get_embedding_version,
@@ -83,13 +85,20 @@ class QAEngine:
         embedding_version: str | None = None,
         relevance_threshold: float | None = None,
         emit_stdout_traces: bool = True,
+        vector_store_url: str | None = None,
     ):
         self.collection_name = collection_name or get_collection_name()
         self.embedding_version = embedding_version or get_embedding_version() or DEFAULT_EMBEDDING_VERSION
+        self.vector_store_url = (
+            vector_store_url
+            if vector_store_url is not None
+            else os.environ.get("VECTOR_STORE_URL", "")
+        ).strip().rstrip("/")
         self.index_path = Path(vector_store_path) if vector_store_path else get_index_path(self.collection_name)
         self.manifest_path = self._resolve_manifest_path(self.index_path)
 
-        self.vector_store = VectorStore(self.index_path)
+        # When VECTOR_STORE_URL is configured, query the dedicated vector-store service over HTTP.
+        self.vector_store: VectorStore | None = None if self.vector_store_url else VectorStore(self.index_path)
         self.tracer = QueryTracer(traces_path, emit_stdout=emit_stdout_traces)
         self.groq_api_key = groq_api_key or os.environ.get("GROQ_API_KEY") or os.environ.get("LLM_API_KEY")
         self.model_name = os.environ.get("LLM_MODEL", model_name)
@@ -125,15 +134,47 @@ class QAEngine:
 
     def check_readiness(self) -> tuple[bool, dict[str, Any]]:
         """Verify store is non-empty and manifest embedding version matches engine config (F-3, F-4)."""
-        self.vector_store.reload_if_changed()
-        manifest = self.get_manifest()
-        chunk_count = self.vector_store.total_chunks(include_superseded=False)
         info: dict[str, Any] = {
             "collection": self.collection_name,
             "embedding_version": self.embedding_version,
-            "active_chunks": chunk_count,
-            "index_path": str(self.index_path),
         }
+        if self.vector_store_url:
+            info["vector_store_url"] = self.vector_store_url
+            try:
+                r = httpx.get(
+                    f"{self.vector_store_url}/readyz",
+                    params={"collection": self.collection_name},
+                    timeout=5.0,
+                )
+                if r.status_code != 200:
+                    info["reason"] = f"Vector store service not ready ({r.status_code})"
+                    return False, info
+                data = r.json()
+                chunk_count = int(data.get("active_chunks", 0))
+                manifest = data.get("manifest") or {}
+                info["active_chunks"] = chunk_count
+                info["index_path"] = data.get("index_path", str(self.index_path))
+                if chunk_count == 0:
+                    info["reason"] = "Vector store has 0 active chunks"
+                    return False, info
+                if manifest.get("embedding_version") and manifest["embedding_version"] != self.embedding_version:
+                    info["manifest_embedding_version"] = manifest["embedding_version"]
+                    info["reason"] = (
+                        f"Embedding version mismatch: API configured for '{self.embedding_version}', "
+                        f"manifest has '{manifest['embedding_version']}'"
+                    )
+                    return False, info
+                return True, info
+            except Exception as e:
+                info["reason"] = f"Vector store service unreachable: {e}"
+                return False, info
+
+        assert self.vector_store is not None
+        self.vector_store.reload_if_changed()
+        manifest = self.get_manifest()
+        chunk_count = self.vector_store.total_chunks(include_superseded=False)
+        info["active_chunks"] = chunk_count
+        info["index_path"] = str(self.index_path)
         if chunk_count == 0:
             info["reason"] = "Vector store has 0 active chunks"
             return False, info
@@ -145,6 +186,25 @@ class QAEngine:
             )
             return False, info
         return True, info
+
+    def _query_vectors(self, collection: str, q_vec: list[float], top_k: int) -> list[tuple[ChunkRecord, float]]:
+        """Query either the dedicated vector-store service or local VectorStore."""
+        if self.vector_store_url:
+            resp = httpx.post(
+                f"{self.vector_store_url}/query",
+                json={
+                    "collection": collection,
+                    "vector": q_vec,
+                    "top_k": top_k,
+                    "filter_superseded": True,
+                },
+                timeout=10.0,
+            )
+            resp.raise_for_status()
+            rows = resp.json().get("results", [])
+            return [(ChunkRecord(**row["chunk"]), float(row["score"])) for row in rows]
+        assert self.vector_store is not None
+        return self.vector_store.query(q_vec, top_k=top_k, filter_superseded=True)
 
     def _lookup_cache(
         self, cache_scope: tuple[str, str], q_norm: str, q_vec: list[float]
@@ -166,7 +226,8 @@ class QAEngine:
         use_cache: bool = True,
     ) -> dict[str, Any]:
         t_start = time.perf_counter()
-        self.vector_store.reload_if_changed()
+        if self.vector_store is not None:
+            self.vector_store.reload_if_changed()
 
         col = collection_name or self.collection_name
         emb_ver = embedding_version or self.embedding_version
@@ -270,7 +331,7 @@ class QAEngine:
 
         # 3. Vector Retrieval + Lexical Reranking
         t_r0 = time.perf_counter()
-        candidates = self.vector_store.query(q_vec, top_k=max(6, top_k * 2), filter_superseded=True)
+        candidates = self._query_vectors(col, q_vec, top_k=max(6, top_k * 2))
         retrieved_reranked = rerank_chunks(user_query, candidates, top_k=top_k)
         latencies["retrieval_ms"] = round((time.perf_counter() - t_r0) * 1000.0, 3)
 

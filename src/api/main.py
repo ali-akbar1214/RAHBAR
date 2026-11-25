@@ -52,6 +52,7 @@ engine = QAEngine(
 
 class AskRequest(BaseModel):
     query: str = Field(..., min_length=3, max_length=500, description="Student question")
+    use_cache: bool = Field(default=True, description="Enable semantic cache lookup")
 
 
 class AskResponse(BaseModel):
@@ -62,6 +63,7 @@ class AskResponse(BaseModel):
     cache_hit: bool = False
     used_fallback: bool = False
     latency_total_ms: float = 0.0
+    retrieved_chunks: list[dict[str, Any]] = []
 
 
 @app.get("/healthz")
@@ -123,7 +125,7 @@ def metrics() -> Response:
 @app.post("/api/ask", response_model=AskResponse)
 def ask(req: AskRequest) -> AskResponse:
     t0 = time.perf_counter()
-    res = engine.answer_query(user_query=req.query)
+    res = engine.answer_query(user_query=req.query, use_cache=req.use_cache)
     total_lat = round((time.perf_counter() - t0) * 1000.0, 3)
 
     return AskResponse(
@@ -134,4 +136,5 @@ def ask(req: AskRequest) -> AskResponse:
         cache_hit=res.get("cache_hit", False),
         used_fallback=res.get("used_fallback", False),
         latency_total_ms=total_lat,
+        retrieved_chunks=res.get("retrieved_chunks", []),
     )
