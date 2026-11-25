@@ -138,3 +138,21 @@ def test_release_gate_rejects_high_false_abstention_and_low_faithfulness() -> No
         failed_rules = [c["rule"] for c in gate["checks"] if not c["passed"]]
         assert "min_faithfulness" in failed_rules
         assert "max_false_abstention_rate" in failed_rules
+
+
+def test_vector_service_endpoints_serve_collection_read_only() -> None:
+    from fastapi.testclient import TestClient
+    from src.vector_service.main import app
+
+    client = TestClient(app)
+    r_h = client.get("/healthz")
+    assert r_h.status_code == 200 and r_h.json()["status"] == "ok"
+
+    r_r = client.get("/readyz", params={"collection": "fast-policies-v1"})
+    assert r_r.status_code == 200
+    assert r_r.json()["active_chunks"] > 0
+
+    vec = embed_text("minimum attendance percentage", version="lexical-proj-v1")
+    r_q = client.post("/query", json={"collection": "fast-policies-v1", "vector": vec, "top_k": 3})
+    assert r_q.status_code == 200
+    assert len(r_q.json()["results"]) == 3

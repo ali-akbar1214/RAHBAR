@@ -470,8 +470,12 @@ def evaluate_end_to_end(
     require_llm: bool = False,
     label: str = "baseline",
     human_labels_path: Path | None = None,
+    api_url: str | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    """Run real end-to-end evaluation via QAEngine.answer_query() (B-8)."""
+    """Run real end-to-end evaluation via QAEngine or live Candidate API Service (B-8 / F-3)."""
+    import httpx
+
+    resolved_api_url = (api_url if api_url is not None else os.environ.get("EVAL_API_URL", "")).strip().rstrip("/")
     engine = QAEngine(
         vector_store_path=vector_store_path,
         traces_path=traces_path,
@@ -479,9 +483,11 @@ def evaluate_end_to_end(
         embedding_version=embedding_version,
         relevance_threshold=relevance_threshold,
         emit_stdout_traces=False,
+        vector_store_url="",
     )
 
     # Index valid (source, section) pairs in store for citation verification
+    assert engine.vector_store is not None
     valid_sections = {(c.source, c.section) for c in engine.vector_store.chunks.values()}
 
     per_question_records: list[dict[str, Any]] = []
@@ -501,7 +507,25 @@ def evaluate_end_to_end(
 
         res = None
         for r_idx in range(max(1, latency_runs)):
-            res = engine.answer_query(q_text, use_cache=False)
+            if resolved_api_url:
+                resp = httpx.post(
+                    f"{resolved_api_url}/api/ask",
+                    json={"query": q_text, "use_cache": False},
+                    timeout=30.0,
+                )
+                resp.raise_for_status()
+                body = resp.json()
+                res = {
+                    "trace_id": body["trace_id"],
+                    "response": body["response"],
+                    "citations": body.get("citations", []),
+                    "abstain": body["abstain"],
+                    "used_fallback": body.get("used_fallback", False),
+                    "latency_ms": float(body.get("latency_total_ms", 0.0)),
+                    "retrieved_chunks": body.get("retrieved_chunks", []),
+                }
+            else:
+                res = engine.answer_query(q_text, use_cache=False)
             all_latencies_ms.append(float(res["latency_ms"]))
 
         assert res is not None
@@ -644,6 +668,7 @@ def run_evaluation_suite(
     seed: int = 42,
     latency_runs: int = 1,
     require_llm: bool = False,
+    api_url: str | None = None,
 ) -> dict[str, Any]:
     random.seed(seed)
     np.random.seed(seed)
@@ -695,6 +720,7 @@ def run_evaluation_suite(
         latency_runs=latency_runs,
         require_llm=require_llm,
         label=label,
+        api_url=api_url,
     )
 
     ts_int = int(time.time())
@@ -724,10 +750,10 @@ def run_evaluation_suite(
     }
 
     json_file = out_dir / f"eval_{label}_{ts_int}.json"
+    results["report_file"] = f"eval/results/{json_file.name}"
     tmp = json_file.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(results, indent=2), encoding="utf-8")
     os.replace(tmp, json_file)
-    results["report_file"] = str(json_file)
 
     # Also write markdown summary table (B-11)
     md_lines = [
@@ -829,6 +855,7 @@ def main() -> None:
     parser.add_argument("--stochasticity", action="store_true")
     parser.add_argument("--gate", action="store_true", help="Evaluate against release gate and exit non-zero on fail")
     parser.add_argument("--save-baseline", action="store_true", help="Persist results to eval/baseline.json")
+    parser.add_argument("--api-url", default=None, help="Live API URL for E2E HTTP evaluation (or EVAL_API_URL env var)")
     parser.add_argument(
         "--score-human-labels",
         nargs=2,
@@ -851,6 +878,7 @@ def main() -> None:
         seed=args.seed,
         latency_runs=args.latency_runs,
         require_llm=args.require_llm,
+        api_url=args.api_url,
     )
     print_summary(res)
 

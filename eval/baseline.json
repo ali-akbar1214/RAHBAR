@@ -783,5 +783,5 @@
       "judge_reason": "Correctly abstained on out-of-domain/adversarial query"
     }
   ],
-  "report_file": "C:\\Users\\aliak\\OneDrive\\Desktop\\Assignments\\SCD A3\\repo\\eval\\results\\eval_baseline_1795539955.json"
+  "report_file": "eval/results/eval_baseline.json"
 }

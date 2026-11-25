@@ -267,7 +267,8 @@ def main() -> None:
     print(f"Golden Set:         {args.golden_path} ({len(golden_qs)} questions)")
     print(f"Live Queries:       {res['total_queries']} ({dom_str})")
     print(f"Embedding Version:  {emb_ver}")
-    print(f"Threshold:          {thresh:.4f} ({rationale})")
+    print(f"Threshold:          {thresh:.4f}")
+    print(f"Rationale:          {rationale}")
     print(f"Score Distributions:")
     for dom, stats in res["domain_score_distributions"].items():
         print(f"  - {dom:<14}: n={stats['count']}, min={stats['min']}, p50={stats['p50']}, max={stats['max']}")
