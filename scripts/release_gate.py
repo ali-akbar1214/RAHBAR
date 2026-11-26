@@ -208,7 +208,30 @@ def main() -> None:
         help="chunk = candidateA-chunk (500/100, v1); embed = candidateA-embed (320/80, v2); fail = candidateB-bad (40/5, v1)",
     )
     parser.add_argument("--require-llm", action="store_true", help="Fail if Groq LLM fallback triggers")
+    parser.add_argument(
+        "--show-saved",
+        action="store_true",
+        help="Print saved canonical release-gate reports for candidateA-chunk, candidateA-embed, and candidateB-bad",
+    )
     args = parser.parse_args()
+
+    if args.show_saved:
+        res_dir = get_results_dir()
+        for name in ("candidateA-chunk", "candidateA-embed", "candidateB-bad"):
+            g_file = res_dir / f"gate_{name}.json"
+            if g_file.exists():
+                g = json.loads(g_file.read_text(encoding="utf-8"))
+                print(
+                    f"\n=== RELEASE GATE [{name}]: {g['verdict']} "
+                    f"(exit={g['exit_code']}) | emb={g['embedding_version']} ==="
+                )
+                for ch in g["checks"]:
+                    v_str = "PASS" if ch["passed"] else "FAIL"
+                    print(
+                        f"  {ch['rule']:<26} {ch['threshold']:<11} "
+                        f"measured={str(ch['measured']):<9} {v_str}"
+                    )
+        return
 
     candidates_run: list[tuple[str, bool]] = []
     if args.candidate in {"chunk", "all"}:

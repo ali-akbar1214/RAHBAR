@@ -862,7 +862,17 @@ def main() -> None:
         metavar=("EVAL_JSON", "LABELS_JSONL"),
         help="Attach per-candidate human agreement metrics onto an existing eval JSON without re-running LLM",
     )
+    parser.add_argument(
+        "--show",
+        default=None,
+        metavar="EVAL_JSON",
+        help="Print formatted 3-level summary for a saved evaluation JSON report",
+    )
     args = parser.parse_args()
+
+    if args.show:
+        print_summary(json.loads(Path(args.show).read_text(encoding="utf-8")))
+        return
 
     if args.score_human_labels:
         hg = attach_human_labels(Path(args.score_human_labels[0]), Path(args.score_human_labels[1]))
