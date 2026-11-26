@@ -32,7 +32,7 @@ spec:
                 name: ragops-env-config
           resources:
             requests:
-              cpu: "20m"
+              cpu: "45m"
               memory: "60Mi"
             limits:
               cpu: "150m"

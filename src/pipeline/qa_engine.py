@@ -35,7 +35,7 @@ from .config import (
     get_manifest_path,
     get_relevance_threshold,
 )
-from .embed import DEFAULT_EMBEDDING_VERSION, cosine_similarity, embed_text
+from .embed import DEFAULT_EMBEDDING_VERSION, _get_projection_matrix, cosine_similarity, embed_text
 from .guardrails import scan_text_for_injection
 from .indexer import ChunkRecord, VectorStore
 from .tracer import QueryTracer, TraceRecord
@@ -108,6 +108,12 @@ class QAEngine:
 
         # Cache keyed by (collection_name, embedding_version) -> list of (q_vec, q_norm, payload)
         self.cache: dict[tuple[str, str], list[dict[str, Any]]] = {}
+
+        # Pre-warm projection matrix at startup so cold pods never inflate request cache_ms latency.
+        try:
+            _get_projection_matrix(self.embedding_version)
+        except Exception:
+            pass
 
         self.groq_client = None
         if self.groq_api_key and not self.groq_api_key.startswith("REPLACE"):

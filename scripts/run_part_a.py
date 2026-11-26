@@ -190,8 +190,8 @@ def main() -> None:
             f"\n[Step 8] Archive + Re-ingest (A-3 Regression): "
             f"active_before={active_before}, total_preserved={total_after_arch}, active_after={active_after_arch}"
         )
-        print(f"  Retrieval with filter_superseded=True:  {hits_excluded}")
-        print(f"  Retrieval with filter_superseded=False: {hits_unfiltered}")
+        print(f"  Retrieval (filter_superseded=True, top-3):  {hits_excluded[:3]}")
+        print(f"  Retrieval (filter_superseded=False, top-3): {hits_unfiltered[:3]}")
         assert total_after_arch == active_before and active_after_arch == 0
 
         indexer.rollback_version(target_doc)

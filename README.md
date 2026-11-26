@@ -54,7 +54,7 @@ RAHBAR/
 │   ├── vector_service/       # Dedicated vector-store microservice (:8001, /readyz, /query)
 │   └── pipeline/             # config, embed, guardrails, verification, indexer, tracer, qa_engine
 ├── tests/                    # Automated unit & regression tests (pytest)
-├── traces/                   # Trace inspection CLI & committed API + eval trace logs (157 total, 0 fallbacks)
+├── traces/                   # Trace inspection CLI & committed API + eval trace logs (298 total, 0 fallbacks)
 ├── Dockerfile
 ├── pytest.ini
 └── requirements.txt
